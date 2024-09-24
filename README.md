@@ -14,7 +14,7 @@ Ici, nous choisirons de faire un jeu de plateforme en vue de côté.
 
 ### Caméra : 
 
-La caméra sera centrée sur le personnage qui restera donc fixe au milieu de l'écran.
+La caméra sera fixe et montrera l'ensemble du niveau.
 
 ### Mouvements du personnage :
 
