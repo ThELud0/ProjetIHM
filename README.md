@@ -59,7 +59,7 @@ La caméra sera centrée sur le personnage qui restera donc fixe au milieu de l'
 - paramètres:
     1. vitesse
     2. temps 
-    2. direction
+    3. direction
 - commande mannette:
     1. Touche B (droite)
 - commande clavier:
@@ -71,4 +71,5 @@ La caméra sera centrée sur le personnage qui restera donc fixe au milieu de l'
 - Lianes
 - Pièges
 - Projectiles ennemis
+- Checkpoints
 
