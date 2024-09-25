@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     public LayerMask groundLayer;
     public float groundCheckRadius;
     public int maxJumpAmount;
+    public float sprintSpeedCoef;
 
     private Gamepad manette;
 
@@ -63,14 +64,25 @@ public class PlayerController : MonoBehaviour
             player.velocity = new Vector2(move, player.velocity.y);
         }
 
-        if (Input.GetButtonDown("Jump") && (jumpCounter>0))
+        if ((Input.GetButtonDown("Jump")) && (jumpCounter>0))
         {
-            player.velocity = new Vector2(player.velocity.x, jumpSpeed);
-            jumpCounter--;
-            jumpTimestamp = Time.time;
+            PlayerJumpUp();
+        }
+        else if (manette != null)
+        {
+            if ((manette.buttonSouth.wasPressedThisFrame)&& (jumpCounter > 0))
+            {
+                PlayerJumpUp();
+            }
         }
 
+    }
 
+    private void PlayerJumpUp()
+    {
+        player.velocity = new Vector2(player.velocity.x, jumpSpeed);
+        jumpCounter--;
+        jumpTimestamp = Time.time;
     }
 
     private void OnDeviceChange(InputDevice device, InputDeviceChange change)
