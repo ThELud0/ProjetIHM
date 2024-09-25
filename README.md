@@ -65,6 +65,14 @@ La caméra sera fixe et montrera l'ensemble du niveau.
 - commande clavier:
     1. Shift
 
+#### Sprint :
+- paramètres:
+    1. coefficient de vitesse
+- commande mannette:
+    1. LB
+- commande clavier:
+    1. Double tap Q/D
+
 ### Environnement :
     
 - Plateformes mobiles

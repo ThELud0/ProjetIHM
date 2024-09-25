@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     public float groundCheckRadius;
     public int maxJumpAmount;
     public float sprintSpeedCoef;
-    public float doubleTapThreshold;
+    public float doubleTapTimeThreshold;
 
     private Gamepad manette;
 
@@ -56,20 +56,22 @@ public class PlayerController : MonoBehaviour
 
         float move = Input.GetAxis("Horizontal") * moveSpeed;
 
-        move = CheckAndApplyPlayerHorizontalSprint(move);
+
 
         if ((move == 0)&&(manette != null))
         {
-            direction = manette.dpad.ReadValue() * moveSpeed;
-            if (!(direction == Vector2.zero))
-                player.velocity = new Vector2(direction.x, player.velocity.y);
-            else
-                player.velocity = new Vector2(manette.leftStick.ReadValue().x * moveSpeed, player.velocity.y);
+            direction = manette.dpad.ReadValue();
+            if (direction == Vector2.zero)
+                direction = manette.leftStick.ReadValue();
+
+            move = direction.x * moveSpeed;
+
         }
-        else
-        {
-            player.velocity = new Vector2(move, player.velocity.y);
-        }
+
+        move = CheckAndApplyPlayerHorizontalSprint(move);
+
+        player.velocity = new Vector2(move, player.velocity.y);
+        
 
         if ((Input.GetButtonDown("Jump")) && (jumpCounter>0))
         {
@@ -94,11 +96,19 @@ public class PlayerController : MonoBehaviour
 
     private float CheckAndApplyPlayerHorizontalSprint(float move)
     {
+        if (manette != null)
+        {
+            if (manette.leftShoulder.isPressed)
+                sprinting = true;
+            else if (manette.leftShoulder.wasReleasedThisFrame)
+                sprinting = false;
+        }
+
         // Check for a double tap on Q key
         if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A)) //Unity adapté à clavier QWERTY... donc Q = A :')
         {
             sprinting = false;
-            if (Time.time - leftLastTapTime <= doubleTapThreshold)
+            if (Time.time - leftLastTapTime <= doubleTapTimeThreshold)
             {
                 sprinting = true;
             }
@@ -108,12 +118,14 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
         {
             sprinting = false;
-            if (Time.time - rightLastTapTime <= doubleTapThreshold)
+            if (Time.time - rightLastTapTime <= doubleTapTimeThreshold)
             {
                 sprinting = true;
             }
             rightLastTapTime = Time.time;
         }
+
+
         if (sprinting)
             move *= sprintSpeedCoef;
 
