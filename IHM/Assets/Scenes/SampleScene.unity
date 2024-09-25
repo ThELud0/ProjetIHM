@@ -554,7 +554,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   groundCheckRadius: 0.15
-  additionalJumps: 0
+  maxJumpAmount: 1
+  sprintSpeedCoef: 1.5
+  doubleTapThreshold: 0.3
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

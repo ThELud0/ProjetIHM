@@ -13,16 +13,24 @@ public class PlayerController : MonoBehaviour
     public float groundCheckRadius;
     public int maxJumpAmount;
     public float sprintSpeedCoef;
+    public float doubleTapThreshold;
 
     private Gamepad manette;
 
     private float tempStopGroundCheckTimer = 0.05f;
     private float jumpTimestamp = 0f;
+    private int jumpCounter;
+
+    private float leftLastTapTime = 0f;
+    private float rightLastTapTime = 0f;
+    private bool sprinting;
+
     private bool previousGroundState;
     private bool isGrounded;
+
     private Rigidbody2D player;
     private Vector2 direction;
-    private int jumpCounter;
+
 
     void Start()
     {
@@ -32,7 +40,7 @@ public class PlayerController : MonoBehaviour
 
         player = GetComponent<Rigidbody2D>();
         manette = Gamepad.current;
-        //jumpCounter = maxJumpAmount;
+
     }
 
     // Update is called once per frame
@@ -45,19 +53,18 @@ public class PlayerController : MonoBehaviour
             jumpCounter = maxJumpAmount;
         }
 
-        //previousGroundState = isGrounded;
 
         float move = Input.GetAxis("Horizontal") * moveSpeed;
+
+        move = CheckAndApplyPlayerHorizontalSprint(move);
 
         if ((move == 0)&&(manette != null))
         {
             direction = manette.dpad.ReadValue() * moveSpeed;
-
             if (!(direction == Vector2.zero))
                 player.velocity = new Vector2(direction.x, player.velocity.y);
             else
                 player.velocity = new Vector2(manette.leftStick.ReadValue().x * moveSpeed, player.velocity.y);
-
         }
         else
         {
@@ -70,7 +77,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (manette != null)
         {
-            if ((manette.buttonSouth.wasPressedThisFrame)&& (jumpCounter > 0))
+            if ((manette.buttonSouth.wasPressedThisFrame) && (jumpCounter > 0))
             {
                 PlayerJumpUp();
             }
@@ -83,6 +90,34 @@ public class PlayerController : MonoBehaviour
         player.velocity = new Vector2(player.velocity.x, jumpSpeed);
         jumpCounter--;
         jumpTimestamp = Time.time;
+    }
+
+    private float CheckAndApplyPlayerHorizontalSprint(float move)
+    {
+        // Check for a double tap on Q key
+        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A)) //Unity adapté à clavier QWERTY... donc Q = A :')
+        {
+            sprinting = false;
+            if (Time.time - leftLastTapTime <= doubleTapThreshold)
+            {
+                sprinting = true;
+            }
+            leftLastTapTime = Time.time;
+        }
+        // Check for a double tap on D key
+        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+        {
+            sprinting = false;
+            if (Time.time - rightLastTapTime <= doubleTapThreshold)
+            {
+                sprinting = true;
+            }
+            rightLastTapTime = Time.time;
+        }
+        if (sprinting)
+            move *= sprintSpeedCoef;
+
+        return move;
     }
 
     private void OnDeviceChange(InputDevice device, InputDeviceChange change)
