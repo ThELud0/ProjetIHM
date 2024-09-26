@@ -38,6 +38,7 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded;
 
     private bool isClimbing;
+    private bool jumpRefreshed;
 
     private Rigidbody2D player;
     private Vector2 direction;
@@ -51,7 +52,8 @@ public class PlayerController : MonoBehaviour
 
         player = GetComponent<Rigidbody2D>();
         manette = Gamepad.current;
-
+        isClimbing = false;
+        jumpRefreshed = false;
     }
 
     // Update is called once per frame
@@ -67,6 +69,12 @@ public class PlayerController : MonoBehaviour
             jumpCounter = maxJumpAmount;
         }
 
+        if (!isClimbing)
+            player.gravityScale = normalGravityScale;
+        else if (isClimbing)
+            player.gravityScale = noGravityScale;
+        
+
 
         float move = Input.GetAxis("Horizontal") * moveSpeed;
         if ((move == 0)&&(manette != null))
@@ -80,7 +88,30 @@ public class PlayerController : MonoBehaviour
         }
         move = CheckAndApplyPlayerHorizontalSprint(move);
         player.velocity = new Vector2(move, player.velocity.y);
-        
+
+        if (CheckAndReturnIfPlayerCanClimb())
+        {
+            CheckClimbInputAndSet();
+            if (isClimbing)
+            {
+                float verticalMove = Input.GetAxis("Vertical") * climbSpeed;
+
+                if ((verticalMove == 0) && (manette != null))
+                {
+                    direction = manette.dpad.ReadValue();
+                    if (direction == Vector2.zero)
+                        direction = manette.leftStick.ReadValue();
+                    verticalMove = direction.y * climbSpeed;
+
+                }
+
+                player.velocity = new Vector2(player.velocity.x, verticalMove);
+            }
+        }
+        else
+        {
+            NotClimbingOrStopped();
+        }
 
         if ((Input.GetButtonDown("Jump")) && (jumpCounter>0))
         {
@@ -152,55 +183,47 @@ public class PlayerController : MonoBehaviour
         return move;
     }
 
-    /*
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void CheckClimbInputAndSet()
     {
-        if (collision.gameObject.tag == "Climbable")
+        if ((Input.GetKeyUp(KeyCode.LeftShift)) || (Input.GetKeyUp(KeyCode.RightShift)) )
+        {
+            NotClimbingOrStopped();
+        }
+        if ((Input.GetKey(KeyCode.LeftShift)) || (Input.GetKey(KeyCode.RightShift)))
+        {
+            StartClimbing();
+        }
+
+        if (manette != null)
+        {
+            if (manette.rightShoulder.isPressed)
+            {
+                StartClimbing();
+            }
+            else if (manette.rightShoulder.wasReleasedThisFrame)
+            {
+                NotClimbingOrStopped();
+            }
+        }
+        
+    }
+
+    private void NotClimbingOrStopped()
+    {
+        isClimbing = false;
+        jumpRefreshed = false;
+    }
+
+    private void StartClimbing()
+    {
+        if (!jumpRefreshed)
         {
             jumpCounter = maxJumpAmount;
+            jumpRefreshed = true;
         }
+
+        isClimbing = true;
     }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.tag == "Climbable")
-        {
-            player.gravityScale = normalGravityScale;
-        }
-    }
-
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        if (collision.gameObject.tag == "Climbable")
-        {
-            if ((Input.GetKeyUp(KeyCode.LeftShift)) || (Input.GetKeyUp(KeyCode.RightShift)))
-            {
-                player.gravityScale = normalGravityScale;
-                Debug.Log("shift released");
-            }
-
-            else if ((Input.GetKey(KeyCode.LeftShift)) || (Input.GetKey(KeyCode.RightShift)))
-            {
-                player.gravityScale = noGravityScale;
-
-                float move = Input.GetAxis("Vertical") * climbSpeed;
-
-                if ((move == 0) && (manette != null))
-                {
-                    direction = manette.dpad.ReadValue();
-                    if (direction == Vector2.zero)
-                        direction = manette.leftStick.ReadValue();
-
-                    move = direction.y * climbSpeed;
-                }
-
-                player.velocity = new Vector2(player.velocity.x, move);
-
-            }
-
-
-        }
-    }*/
 
     /// <summary>
     /// Check if player is near climb-able objects
