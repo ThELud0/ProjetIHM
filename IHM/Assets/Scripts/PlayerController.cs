@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour
     private Gamepad manette;
 
     private float tempStopGroundCheckTimer = 0.05f;
+    private float tempStopClimbCheckTimer = 0.1f;
     private float jumpTimestamp = 0f;
     private int jumpCounter;
     private float noGravityScale = 0f;
@@ -56,69 +57,77 @@ public class PlayerController : MonoBehaviour
         jumpRefreshed = false;
     }
 
+    /* -------------------------------------------------- END OF START METHOD -------------------------------------------------- */
+
     // Update is called once per frame
     void Update()
     {
-        if ((Physics2D.OverlapCircle(playerLowerLeftCornerCheck.position, groundCheckRadius, groundLayer)) || (Physics2D.OverlapCircle(playerLowerRightCornerCheck.position, groundCheckRadius, groundLayer)))
+        // Check if there is ground under the player
+        if ((Physics2D.OverlapCircle(playerLowerLeftCornerCheck.position, groundCheckRadius, groundLayer)) || 
+            (Physics2D.OverlapCircle(playerLowerRightCornerCheck.position, groundCheckRadius, groundLayer)))
             isGrounded = true;
         else
             isGrounded = false;
 
-        if ((isGrounded)&&(Time.time > jumpTimestamp + tempStopGroundCheckTimer))
-        {
+        // Reset jump counter if player is on the ground
+        if ((isGrounded) && (Time.time > jumpTimestamp + tempStopGroundCheckTimer)) //Stop checking for ground for a short time after initiating a jump to not reset the counter right away
             jumpCounter = maxJumpAmount;
-        }
 
+        // Player is not submitted to gravity if climbing
         if (!isClimbing)
             player.gravityScale = normalGravityScale;
         else if (isClimbing)
             player.gravityScale = noGravityScale;
         
 
-
+        // get player keyboard input for x-axis movement
         float move = Input.GetAxis("Horizontal") * moveSpeed;
-        if ((move == 0)&&(manette != null))
+        if ((move == 0)&&(manette != null)) //if no keyboard input check for gamepad input
         {
             direction = manette.dpad.ReadValue();
             if (direction == Vector2.zero)
                 direction = manette.leftStick.ReadValue();
-
             move = direction.x * moveSpeed;
 
         }
+        // check for sprinting input and modify move speed accordingly
         move = CheckAndApplyPlayerHorizontalSprint(move);
+        // apply move speed to player velocity
         player.velocity = new Vector2(move, player.velocity.y);
 
+        // check if player is near climbable surface
         if (CheckAndReturnIfPlayerCanClimb())
         {
+            //check if player gives climbing input
             CheckClimbInputAndSet();
-            if (isClimbing)
+            if (isClimbing  && (Time.time > jumpTimestamp + tempStopClimbCheckTimer))
             {
+                // get player keyboard input for y-axis movement
                 float verticalMove = Input.GetAxis("Vertical") * climbSpeed;
-
-                if ((verticalMove == 0) && (manette != null))
+                if ((verticalMove == 0) && (manette != null)) //if no keyboard input check for gamepad input
                 {
                     direction = manette.dpad.ReadValue();
                     if (direction == Vector2.zero)
                         direction = manette.leftStick.ReadValue();
                     verticalMove = direction.y * climbSpeed;
-
                 }
-
+                // apply move speed to player velocity
                 player.velocity = new Vector2(player.velocity.x, verticalMove);
             }
         }
         else
         {
-            NotClimbingOrStopped();
+            NotClimbingOrStopped(); //player cannot be climbing if not near climbable surface
         }
 
+        //check for jump input and make player jump if there are jumps remaining in jump counter
         if ((Input.GetButtonDown("Jump")) && (jumpCounter>0))
         {
             PlayerJumpUp();
         }
-        else if (manette != null)
+        else if (manette != null) 
         {
+            // check gamepad jump input
             if ((manette.buttonSouth.wasPressedThisFrame) && (jumpCounter > 0))
             {
                 PlayerJumpUp();
@@ -183,6 +192,10 @@ public class PlayerController : MonoBehaviour
         return move;
     }
 
+
+    /// <summary>
+    /// Checks if a climbing input was given by the player and calls climbing methods if so
+    /// </summary>
     private void CheckClimbInputAndSet()
     {
         if ((Input.GetKeyUp(KeyCode.LeftShift)) || (Input.GetKeyUp(KeyCode.RightShift)) )
@@ -208,12 +221,18 @@ public class PlayerController : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// player is not climbing or stopped climbing
+    /// </summary>
     private void NotClimbingOrStopped()
     {
         isClimbing = false;
         jumpRefreshed = false;
     }
 
+    /// <summary>
+    /// sets isClimbing to true and refreshes jumpCounter once per beginning of climb
+    /// </summary>
     private void StartClimbing()
     {
         if (!jumpRefreshed)
@@ -230,6 +249,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private bool CheckAndReturnIfPlayerCanClimb()
     {
+        //if player is near climbable surface on left/right side
         if ((Physics2D.OverlapCircle(playerLowerLeftCornerCheck.position, climbCheckRadius, climbLayer)) || 
             (Physics2D.OverlapCircle(playerLowerRightCornerCheck.position, climbCheckRadius, climbLayer)) ||
             (Physics2D.OverlapCircle(playerUpperLeftCornerCheck.position, climbCheckRadius, climbLayer)) ||
@@ -239,6 +259,12 @@ public class PlayerController : MonoBehaviour
             return false;
     }
 
+
+    /// <summary>
+    /// Keeps track if a device (gamepad) was added or removed during runtime
+    /// </summary>
+    /// <param name="device"></param>
+    /// <param name="change"></param>
     private void OnDeviceChange(InputDevice device, InputDeviceChange change)
     {
         // Check if the device is a gamepad
