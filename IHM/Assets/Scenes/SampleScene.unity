@@ -1036,12 +1036,18 @@ MonoBehaviour:
   moveSpeed: 10
   jumpSpeed: 20
   climbSpeed: 5
-  groundCheckLeft: {fileID: 1685818787}
-  groundCheckRight: {fileID: 11935335}
+  playerLowerLeftCornerCheck: {fileID: 1685818787}
+  playerLowerRightCornerCheck: {fileID: 11935335}
+  playerUpperLeftCornerCheck: {fileID: 1860779087}
+  playerUpperRightCornerCheck: {fileID: 1115867491}
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
+  climbLayer:
+    serializedVersion: 2
+    m_Bits: 64
   groundCheckRadius: 0.05
+  climbCheckRadius: 0.02
   maxJumpAmount: 1
   sprintSpeedCoef: 2
   doubleTapTimeThreshold: 0.3
