@@ -25,6 +25,13 @@ public class PlayerController : MonoBehaviour
 
     private Gamepad manette;
 
+    //Keyboard binds
+    private KeyCode shiftKeyboardInput = KeyCode.LeftShift;
+    private KeyCode shiftAltKeyboardInput = KeyCode.RightShift;
+    private KeyCode leftSprintKeyboardInput = KeyCode.A; //Unity se base sur des claviers QWERTY...
+    private KeyCode rightSprintKeyboardInput = KeyCode.D;
+
+
     private float tempStopGroundCheckTimer = 0.05f;
     private float tempStopClimbCheckTimer = 0.1f;
     private float jumpTimestamp = 0f;
@@ -165,7 +172,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // Check for a double tap on Q key
-        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A)) //Unity adapté à clavier QWERTY... donc Q = A :')
+        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(leftSprintKeyboardInput)) //Unity adapté à clavier QWERTY... donc Q = A :')
         {
             sprinting = false;
             if (Time.time - leftLastTapTime <= doubleTapTimeThreshold)
@@ -175,7 +182,7 @@ public class PlayerController : MonoBehaviour
             leftLastTapTime = Time.time;
         }
         // Check for a double tap on D key
-        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(rightSprintKeyboardInput))
         {
             sprinting = false;
             if (Time.time - rightLastTapTime <= doubleTapTimeThreshold)
@@ -198,11 +205,11 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void CheckClimbInputAndSet()
     {
-        if ((Input.GetKeyUp(KeyCode.LeftShift)) || (Input.GetKeyUp(KeyCode.RightShift)) )
+        if ((Input.GetKeyUp(shiftKeyboardInput)) || (Input.GetKeyUp(shiftAltKeyboardInput)) )
         {
             NotClimbingOrStopped();
         }
-        if ((Input.GetKey(KeyCode.LeftShift)) || (Input.GetKey(KeyCode.RightShift)))
+        if ((Input.GetKey(shiftKeyboardInput)) || (Input.GetKey(shiftAltKeyboardInput)))
         {
             StartClimbing();
         }
