@@ -154,7 +154,8 @@ public class PlayerController : MonoBehaviour
 
         float moveX = Input.GetAxis("Horizontal");
         float moveY = Input.GetAxis("Vertical");
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !IsDashing && (moveX != 0 || moveY != 0) && !hasDashed)
+        //#TODO_N get how we deal with gamepad/keyboard
+        if (((manette != null && manette.buttonEast.wasPressedThisFrame) || Input.GetKeyDown(KeyCode.LeftShift)) && !IsDashing && (moveX != 0 || moveY != 0) && !hasDashed)
         {
             IsDashing = true;
             CurrentDashTimer = DashTime;
