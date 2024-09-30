@@ -21,8 +21,8 @@ La caméra sera fixe et montrera l'ensemble du niveau.
 #### Saut :
 
 - paramètres:
-    1. hauteur
-    2. vitesse
+    1. vitesse (= hauteur indirectement)
+    2. nombre de sauts
 - commande mannette:
     1. Touche A (bas)
 - commande clavier:
@@ -32,7 +32,6 @@ La caméra sera fixe et montrera l'ensemble du niveau.
 
 - paramètres:
     1. vitesse
-    2. direction
 - commande mannette:
     1. Joystick / ControlPad
 - commande clavier:
