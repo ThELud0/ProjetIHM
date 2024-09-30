@@ -26,8 +26,8 @@ public class PlayerController : MonoBehaviour
     private Gamepad manette;
 
     //Keyboard binds
-    private KeyCode shiftKeyboardInput = KeyCode.LeftShift;
-    private KeyCode shiftAltKeyboardInput = KeyCode.RightShift;
+    private KeyCode shiftKeyboardInput = KeyCode.LeftControl;
+    private KeyCode shiftAltKeyboardInput = KeyCode.RightControl;
     private KeyCode leftSprintKeyboardInput = KeyCode.A; //Unity se base sur des claviers QWERTY...
     private KeyCode rightSprintKeyboardInput = KeyCode.D;
 
