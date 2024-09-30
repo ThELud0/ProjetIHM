@@ -51,6 +51,14 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D player;
     private Vector2 direction;
 
+    private float CurrentDashTimer;
+    public float DashTime = 0.3f;
+    private bool IsDashing = false;
+    private Vector2 DashDirection;
+    public float dashSpeed = 30f;
+    public LayerMask collisionLayer;//#TODO_N there is still problems with collision I should deal with, maybe in the matrix ?
+    private bool hasDashed = false;
+
 
     void Start()
     {
@@ -76,9 +84,12 @@ public class PlayerController : MonoBehaviour
         else
             isGrounded = false;
 
-        // Reset jump counter if player is on the ground
+        // Reset jump counter and ability to dash if player is on the ground
         if ((isGrounded) && (Time.time > jumpTimestamp + tempStopGroundCheckTimer)) //Stop checking for ground for a short time after initiating a jump to not reset the counter right away
+        {
             jumpCounter = maxJumpAmount;
+            hasDashed = false;
+        }
 
         // Player is not submitted to gravity if climbing
         if (!isClimbing)
@@ -141,10 +152,46 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        float moveX = Input.GetAxis("Horizontal");
+        float moveY = Input.GetAxis("Vertical");
+        //#TODO_N get how we deal with gamepad/keyboard
+        if (((manette != null && manette.buttonEast.wasPressedThisFrame) || Input.GetKeyDown(KeyCode.LeftShift)) && !IsDashing && (moveX != 0 || moveY != 0) && !hasDashed)
+        {
+            IsDashing = true;
+            CurrentDashTimer = DashTime;
+            player.velocity = Vector2.zero;
+
+            DashDirection = new Vector2(moveX, moveY).normalized;
+        }
+
+        if (IsDashing)
+            Dash();
     }
 
     /* -------------------------------------------------- END OF UPDATE METHOD -------------------------------------------------- */
 
+    private void Dash()
+    {
+        hasDashed = true;
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, DashDirection, dashSpeed * Time.deltaTime, collisionLayer);
+
+        if (hit.collider != null)
+        {
+            IsDashing = false;
+            player.velocity = Vector2.zero;
+            transform.position = hit.point - DashDirection * 0.1f;
+        }
+        else
+            player.velocity = DashDirection * dashSpeed;
+
+        CurrentDashTimer -= Time.deltaTime;
+
+        if (CurrentDashTimer <= 0)
+        {
+            IsDashing = false;
+            player.velocity = Vector2.zero; //#TODO_N stop dashing less violently maybe ?
+        }
+    }
 
     /// <summary>
     /// Make player jump up
