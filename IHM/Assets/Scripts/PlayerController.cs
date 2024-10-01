@@ -103,10 +103,7 @@ public class PlayerController : MonoBehaviour
         if ((move == 0)&&(manette != null)) //if no keyboard input check for gamepad input
         {
             direction = manette.dpad.ReadValue();
-            if (direction == Vector2.zero)
-                direction = manette.leftStick.ReadValue();
             move = direction.x * moveSpeed;
-
         }
         // check for sprinting input and modify move speed accordingly
         move = CheckAndApplyPlayerHorizontalSprint(move);
@@ -125,8 +122,6 @@ public class PlayerController : MonoBehaviour
                 if ((verticalMove == 0) && (manette != null)) //if no keyboard input check for gamepad input
                 {
                     direction = manette.dpad.ReadValue();
-                    if (direction == Vector2.zero)
-                        direction = manette.leftStick.ReadValue();
                     verticalMove = direction.y * climbSpeed;
                 }
                 // apply move speed to player velocity
@@ -138,15 +133,27 @@ public class PlayerController : MonoBehaviour
             NotClimbingOrStopped(); //player cannot be climbing if not near climbable surface
         }
 
+
+        if ((Input.GetButtonDown("Jump")) && (jumpCounter == maxJumpAmount))
+        {
+            if (isGrounded || isClimbing)
+                PlayerJumpUp();
+        }
         //check for jump input and make player jump if there are jumps remaining in jump counter
-        if ((Input.GetButtonDown("Jump")) && (jumpCounter>0))
+        else if ((Input.GetButtonDown("Jump")) && (jumpCounter>0))
         {
             PlayerJumpUp();
+
         }
         else if (manette != null) 
         {
+            if ((manette.buttonSouth.wasPressedThisFrame) && (jumpCounter == maxJumpAmount))
+            {
+                if (isGrounded || isClimbing)
+                    PlayerJumpUp();
+            }
             // check gamepad jump input
-            if ((manette.buttonSouth.wasPressedThisFrame) && (jumpCounter > 0))
+            else if ((manette.buttonSouth.wasPressedThisFrame) && (jumpCounter > 0))
             {
                 PlayerJumpUp();
             }
@@ -154,8 +161,14 @@ public class PlayerController : MonoBehaviour
 
         float moveX = Input.GetAxis("Horizontal");
         float moveY = Input.GetAxis("Vertical");
+        if (((moveX == 0)&&(moveY == 0)) && (manette != null)) //if no keyboard input check for gamepad input
+        {
+            direction = manette.dpad.ReadValue();
+            moveX = direction.x;
+            moveY = direction.y;
+        }
         //#TODO_N get how we deal with gamepad/keyboard
-        if (((manette != null && manette.buttonEast.wasPressedThisFrame) || Input.GetKeyDown(KeyCode.LeftShift)) && !IsDashing && (moveX != 0 || moveY != 0) && !hasDashed)
+        if ( ((manette != null && manette.buttonEast.wasPressedThisFrame) || Input.GetKeyDown(KeyCode.LeftShift) ) && !IsDashing && (moveX != 0 || moveY != 0) && !hasDashed)
         {
             IsDashing = true;
             CurrentDashTimer = DashTime;
