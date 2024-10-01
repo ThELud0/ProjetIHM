@@ -45,7 +45,6 @@ public class PlayerController : MonoBehaviour
     private float rightLastTapTime = 0f;
     private bool sprinting;
 
-    private bool previousGroundState;
     private bool isGrounded;
 
     private bool isClimbing;
@@ -57,6 +56,9 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D player;
     private Vector2 direction;
+    private float previousMoveDirection = 0f;
+    private float previousMoveDirectionTimestamp = 0f;
+    private float previousMoveDirectionTimestampOffset = 0.05f;
 
     private Vector3 respawnPoint;
     private Vector3 initialScale;
@@ -298,10 +300,12 @@ public class PlayerController : MonoBehaviour
     /// <param name="move">move is a float corresponding to the x-axis velovity for the player</param>
     /// <returns></returns>
     private float CheckAndApplyPlayerHorizontalSprint(float move)
-    {
+    { 
+
+
         if (manette != null)
         {
-            if (manette.leftShoulder.isPressed)
+            if ((manette.leftShoulder.isPressed)&&isGrounded)
                 sprinting = true;
             else if (manette.leftShoulder.wasReleasedThisFrame)
                 sprinting = false;
@@ -311,7 +315,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(leftSprintKeyboardInput)) //Unity adapté à clavier QWERTY... donc Q = A :')
         {
             sprinting = false;
-            if (Time.time - leftLastTapTime <= doubleTapTimeThreshold)
+            if ((Time.time - leftLastTapTime <= doubleTapTimeThreshold)&&isGrounded)
             {
                 sprinting = true;
             }
@@ -321,16 +325,27 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(rightSprintKeyboardInput))
         {
             sprinting = false;
-            if (Time.time - rightLastTapTime <= doubleTapTimeThreshold)
+            if ((Time.time - rightLastTapTime <= doubleTapTimeThreshold)&& isGrounded)
             {
                 sprinting = true;
             }
             rightLastTapTime = Time.time;
         }
 
+        bool samesign = (move < 0) == (previousMoveDirection < 0);
+        if (!samesign)
+            sprinting = false;
+
 
         if (sprinting)
             move *= sprintSpeedCoef;
+        
+        if (Time.time > previousMoveDirectionTimestamp + previousMoveDirectionTimestampOffset)
+        {
+            previousMoveDirection = move;
+            previousMoveDirectionTimestamp = Time.time;
+        }
+
 
         return move;
     }
@@ -378,6 +393,7 @@ public class PlayerController : MonoBehaviour
     {
         isClimbing = false;
         jumpRefreshed = false;
+
     }
 
     /// <summary>
@@ -390,7 +406,7 @@ public class PlayerController : MonoBehaviour
             jumpCounter = maxJumpAmount;
             jumpRefreshed = true;
         }
-
+        sprinting = false;
         isClimbing = true;
     }
 
@@ -412,25 +428,44 @@ public class PlayerController : MonoBehaviour
 
     /* -------------------------------------------------- END OF CLIMBING METHODS -------------------------------------------------- */
 
+
+    /* -------------------------------------------------- BEGINNING OF MISCELLEANOUS METHODS -------------------------------------------------- */
+
     private void CheckIfTouchingWall()
     {
         if ((Physics2D.OverlapCircle(playerLowerLeftCornerCheck.position, wallCheckRadius, wallLayer)) ||
     (Physics2D.OverlapCircle(playerLowerRightCornerCheck.position, wallCheckRadius, wallLayer)) ||
     (Physics2D.OverlapCircle(playerUpperLeftCornerCheck.position, wallCheckRadius, wallLayer)) ||
-    (Physics2D.OverlapCircle(playerUpperRightCornerCheck.position, wallCheckRadius, wallLayer)))   
+    (Physics2D.OverlapCircle(playerUpperRightCornerCheck.position, wallCheckRadius, wallLayer)))
+        {
             isTouchingWall = true;
+            sprinting = false;
+        }
+            
         else
             isTouchingWall = false;
     }
 
+    private void InitializePlayerAtCheckPoint()
+    {
+        transform.position = respawnPoint;
+        player.velocity = new Vector2(0, 0);
+        jumpRefreshed = false;
+        wallJumpRefreshed = false;
+        IsDashing = false;
+        isClimbing = false;
+        hasDashed = false;
+        sprinting = false;
+    }
 
+    /* -------------------------------------------------- END OF MISCELLEANOUS METHODS -------------------------------------------------- */
 
 
     /* -------------------------------------------------- BEGINNING OF UNITY METHODS -------------------------------------------------- */
 
     void OnBecameInvisible()
     {
-        transform.position = respawnPoint;
+        InitializePlayerAtCheckPoint();
     }
 
 
