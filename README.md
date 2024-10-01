@@ -75,8 +75,36 @@ La caméra sera fixe et montrera l'ensemble du niveau.
 ### Environnement :
     
 - Plateformes mobiles
+- Platformes cassable
+- Platforme Glace
 - Lianes
 - Pièges
 - Projectiles ennemis
 - Checkpoints
 
+TODO:
+|Tache|Etat|Commentaire|
+|----|-----|------------|
+|Jump| Fait| -- |
+|Wall jump| Fait/A revoir | Voir le nombre de wall jump possible|
+|Sprint|Fait| Enlever la possibilité de sprint dans l'air ? |
+|Déplacement | Fait | - |
+|S'accrocher | Fait | - |
+|Grimper| Fait | - |
+|Dash | Fait | Voir Bug log |
+|Checkpoint | A faire |-|
+|Plateformes mobiles| A faire |-|
+|Platformes cassable| A faire |-|
+|Platforme Glace| A faire |-|
+| Lianes| A faire |-|
+| Pièges| A faire |-|
+| Projectiles ennemis| A faire |-|
+
+
+
+Bug found:
+
+|Problème | Reproduction|
+|---------|------------|
+|Problème de collision| Se mettre sur le test de wall jump et sauter/Dasher vers le haut plusieurs fois jusqu'à que le perso traverse le sol|
+|Dash se désactive par moment| Je ne sais pas, peut être un pb de DashCounter ?|
