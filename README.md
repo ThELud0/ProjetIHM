@@ -85,20 +85,20 @@ La caméra sera fixe et montrera l'ensemble du niveau.
 TODO:
 |Tache|Etat|Commentaire|
 |----|-----|------------|
-|Jump| Fait| -- |
+|Jump| Fait| |
 |Wall jump| Fait/A revoir | Voir le nombre de wall jump possible|
 |Sprint|Fait| Enlever la possibilité de sprint dans l'air ? |
-|Déplacement | Fait | - |
-|S'accrocher | Fait | - |
-|Grimper| Fait | - |
+|Déplacement | Fait |  |
+|S'accrocher | Fait |  |
+|Grimper| Fait |  |
 |Dash | Fait | Voir Bug log |
-|Checkpoint | A faire |-|
-|Plateformes mobiles| A faire |-|
-|Platformes cassable| A faire |-|
-|Platforme Glace| A faire |-|
-| Lianes| A faire |-|
-| Pièges| A faire |-|
-| Projectiles ennemis| A faire |-|
+|Checkpoint | A faire ||
+|Plateformes mobiles| A faire ||
+|Platformes cassable| A faire ||
+|Platforme Glace| A faire ||
+| Lianes| Fait ||
+| Eau | A faire ||
+| Vent | A faire ||
 
 
 
