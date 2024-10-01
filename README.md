@@ -87,13 +87,13 @@ TODO:
 |----|-----|------------|
 |Jump| Fait| |
 |Wall jump| Fait/A revoir | Voir le nombre de wall jump possible|
-|Sprint|Fait| Enlever la possibilité de sprint dans l'air ? |
+|Sprint|Fait|  |
 |Déplacement | Fait |  |
 |S'accrocher | Fait |  |
 |Grimper| Fait |  |
 |Dash | Fait | Voir Bug log |
-|Checkpoint | A faire ||
-|Plateformes mobiles| A faire ||
+|Checkpoint | A rajouter dans les scènes ||
+|Plateformes mobiles| A rajouter dans les scènes ||
 |Platformes cassable| A faire ||
 |Platforme Glace| A faire ||
 | Lianes| Fait ||
