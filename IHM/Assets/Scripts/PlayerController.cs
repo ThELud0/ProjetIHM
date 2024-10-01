@@ -15,12 +15,15 @@ public class PlayerController : MonoBehaviour
     public Transform playerUpperRightCornerCheck;
     public LayerMask groundLayer;
     public LayerMask climbLayer;
+    public LayerMask wallLayer;
     public float groundCheckRadius;
     public float climbCheckRadius;
+    public float wallCheckRadius;
     public int maxJumpAmount;
     public float sprintSpeedCoef;
     public float doubleTapTimeThreshold;
-    public float normalGravityScale;   
+    public float normalGravityScale;
+    public float jumpingTimeWindow;
     
 
     private Gamepad manette;
@@ -47,6 +50,10 @@ public class PlayerController : MonoBehaviour
 
     private bool isClimbing;
     private bool jumpRefreshed;
+    private bool wallJumpRefreshed;
+    private bool isTouchingWall;
+    private bool canStillJump;
+    private float canStillJumpTimestamp = 0f;
 
     private Rigidbody2D player;
     private Vector2 direction;
@@ -96,19 +103,21 @@ public class PlayerController : MonoBehaviour
             player.gravityScale = normalGravityScale;
         else if (isClimbing)
             player.gravityScale = noGravityScale;
-        
 
-        // get player keyboard input for x-axis movement
-        float move = Input.GetAxis("Horizontal") * moveSpeed;
-        if ((move == 0)&&(manette != null)) //if no keyboard input check for gamepad input
+
+
+        HorizontalMovement();
+        CheckIfTouchingWall();
+        if (isTouchingWall)
         {
-            direction = manette.dpad.ReadValue();
-            move = direction.x * moveSpeed;
+            if (!wallJumpRefreshed)
+            {
+                jumpCounter = maxJumpAmount;
+                wallJumpRefreshed = true;
+            }
         }
-        // check for sprinting input and modify move speed accordingly
-        move = CheckAndApplyPlayerHorizontalSprint(move);
-        // apply move speed to player velocity
-        player.velocity = new Vector2(move, player.velocity.y);
+        else
+            wallJumpRefreshed = false;
 
         // check if player is near climbable surface
         if (CheckAndReturnIfPlayerCanClimb())
@@ -134,30 +143,7 @@ public class PlayerController : MonoBehaviour
         }
 
 
-        if ((Input.GetButtonDown("Jump")) && (jumpCounter == maxJumpAmount))
-        {
-            if (isGrounded || isClimbing)
-                PlayerJumpUp();
-        }
-        //check for jump input and make player jump if there are jumps remaining in jump counter
-        else if ((Input.GetButtonDown("Jump")) && (jumpCounter>0))
-        {
-            PlayerJumpUp();
-
-        }
-        else if (manette != null) 
-        {
-            if ((manette.buttonSouth.wasPressedThisFrame) && (jumpCounter == maxJumpAmount))
-            {
-                if (isGrounded || isClimbing)
-                    PlayerJumpUp();
-            }
-            // check gamepad jump input
-            else if ((manette.buttonSouth.wasPressedThisFrame) && (jumpCounter > 0))
-            {
-                PlayerJumpUp();
-            }
-        }
+        CheckAndExecuteJump();
 
         float moveX = Input.GetAxis("Horizontal");
         float moveY = Input.GetAxis("Vertical");
@@ -183,6 +169,8 @@ public class PlayerController : MonoBehaviour
 
     /* -------------------------------------------------- END OF UPDATE METHOD -------------------------------------------------- */
 
+
+
     private void Dash()
     {
         hasDashed = true;
@@ -206,6 +194,45 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void CheckAndExecuteJump()
+    {
+        if (isGrounded || isClimbing || isTouchingWall)
+        {
+            canStillJumpTimestamp = Time.time;
+        }
+        if (Time.time < canStillJumpTimestamp + jumpingTimeWindow)
+        {
+            canStillJump = true;
+        }
+        else
+            canStillJump = false;
+
+            if ((Input.GetButtonDown("Jump")) && (jumpCounter == maxJumpAmount))
+        {
+            if (canStillJump)
+                PlayerJumpUp();
+        }
+        //check for jump input and make player jump if there are jumps remaining in jump counter
+        else if ((Input.GetButtonDown("Jump")) && (jumpCounter > 0))
+        {
+            PlayerJumpUp();
+
+        }
+        else if (manette != null)
+        {
+            if ((manette.buttonSouth.wasPressedThisFrame) && (jumpCounter == maxJumpAmount))
+            {
+                if (canStillJump)
+                    PlayerJumpUp();
+            }
+            // check gamepad jump input
+            else if ((manette.buttonSouth.wasPressedThisFrame) && (jumpCounter > 0))
+            {
+                PlayerJumpUp();
+            }
+        }
+    }
+
     /// <summary>
     /// Make player jump up
     /// </summary>
@@ -215,6 +242,26 @@ public class PlayerController : MonoBehaviour
         jumpCounter--;
         jumpTimestamp = Time.time;
     }
+
+
+    private void HorizontalMovement()
+    {
+        // get player keyboard input for x-axis movement
+        float move = Input.GetAxis("Horizontal") * moveSpeed;
+        if ((move == 0) && (manette != null)) //if no keyboard input check for gamepad input
+        {
+            direction = manette.dpad.ReadValue();
+            move = direction.x * moveSpeed;
+        }
+        // check for sprinting input and modify move speed accordingly
+        move = CheckAndApplyPlayerHorizontalSprint(move);
+        // apply move speed to player velocity
+        player.velocity = new Vector2(move, player.velocity.y);
+    }
+
+
+
+
 
     /// <summary>
     /// Check if player is sprinting and if so, multiply their move speed by sprinting factor
@@ -324,6 +371,17 @@ public class PlayerController : MonoBehaviour
             return true;
         else
             return false;
+    }
+
+    private void CheckIfTouchingWall()
+    {
+        if ((Physics2D.OverlapCircle(playerLowerLeftCornerCheck.position, wallCheckRadius, wallLayer)) ||
+    (Physics2D.OverlapCircle(playerLowerRightCornerCheck.position, wallCheckRadius, wallLayer)) ||
+    (Physics2D.OverlapCircle(playerUpperLeftCornerCheck.position, wallCheckRadius, wallLayer)) ||
+    (Physics2D.OverlapCircle(playerUpperRightCornerCheck.position, wallCheckRadius, wallLayer)))   
+            isTouchingWall = true;
+        else
+            isTouchingWall = false;
     }
 
 
