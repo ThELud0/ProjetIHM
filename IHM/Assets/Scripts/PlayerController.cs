@@ -58,6 +58,11 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D player;
     private Vector2 direction;
 
+    private Vector3 respawnPoint;
+    private Vector3 initialScale;
+    private Vector3 currentScale;
+
+
     private float CurrentDashTimer;
     public float DashTime = 0.3f;
     private bool IsDashing = false;
@@ -66,7 +71,7 @@ public class PlayerController : MonoBehaviour
     public LayerMask collisionLayer;//#TODO_N there is still problems with collision I should deal with, maybe in the matrix ?
     private bool hasDashed = false;
 
-
+    /* -------------------------------------------------- BEGINNING OF START METHOD -------------------------------------------------- */
     void Start()
     {
         // Subscribe to the device change event
@@ -77,9 +82,18 @@ public class PlayerController : MonoBehaviour
         manette = Gamepad.current;
         isClimbing = false;
         jumpRefreshed = false;
+
+        respawnPoint = transform.position;
+        initialScale = transform.localScale;
+        currentScale = initialScale;
     }
 
     /* -------------------------------------------------- END OF START METHOD -------------------------------------------------- */
+
+
+
+
+    /* -------------------------------------------------- BEGINNING OF UPDATE METHOD -------------------------------------------------- */
 
     // Update is called once per frame
     void Update()
@@ -171,6 +185,8 @@ public class PlayerController : MonoBehaviour
 
 
 
+
+    /* -------------------------------------------------- BEGINNING OF DASH METHODS -------------------------------------------------- */
     private void Dash()
     {
         hasDashed = true;
@@ -193,6 +209,15 @@ public class PlayerController : MonoBehaviour
             player.velocity = Vector2.zero; //#TODO_N stop dashing less violently maybe ?
         }
     }
+
+
+    /* -------------------------------------------------- END OF DASH METHODS -------------------------------------------------- */
+
+
+
+
+    /* -------------------------------------------------- BEGINNING OF JUMP METHODS -------------------------------------------------- */
+
 
     private void CheckAndExecuteJump()
     {
@@ -243,6 +268,11 @@ public class PlayerController : MonoBehaviour
         jumpTimestamp = Time.time;
     }
 
+    /* -------------------------------------------------- END OF JUMP METHODS -------------------------------------------------- */
+
+
+
+    /* -------------------------------------------------- BEGINNING OF MOVEMENT METHODS -------------------------------------------------- */
 
     private void HorizontalMovement()
     {
@@ -258,7 +288,6 @@ public class PlayerController : MonoBehaviour
         // apply move speed to player velocity
         player.velocity = new Vector2(move, player.velocity.y);
     }
-
 
 
 
@@ -306,6 +335,13 @@ public class PlayerController : MonoBehaviour
         return move;
     }
 
+    /* -------------------------------------------------- END OF MOVEMENT METHODS -------------------------------------------------- */
+
+
+
+
+
+    /* -------------------------------------------------- BEGINNING OF CLIMBING METHODS -------------------------------------------------- */
 
     /// <summary>
     /// Checks if a climbing input was given by the player and calls climbing methods if so
@@ -373,6 +409,9 @@ public class PlayerController : MonoBehaviour
             return false;
     }
 
+
+    /* -------------------------------------------------- END OF CLIMBING METHODS -------------------------------------------------- */
+
     private void CheckIfTouchingWall()
     {
         if ((Physics2D.OverlapCircle(playerLowerLeftCornerCheck.position, wallCheckRadius, wallLayer)) ||
@@ -383,6 +422,47 @@ public class PlayerController : MonoBehaviour
         else
             isTouchingWall = false;
     }
+
+
+
+
+    /* -------------------------------------------------- BEGINNING OF UNITY METHODS -------------------------------------------------- */
+
+    void OnBecameInvisible()
+    {
+        transform.position = respawnPoint;
+    }
+
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "CheckPoint")
+        {
+            respawnPoint = transform.position;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "MovingPlatform")
+        {
+            transform.SetParent(collision.transform, true);
+            currentScale = new Vector3(initialScale.x / collision.transform.localScale.x, initialScale.y / collision.transform.localScale.y, initialScale.z / collision.transform.localScale.z);
+        }
+    }
+
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "MovingPlatform")
+        {
+            this.transform.parent = null;
+            currentScale = initialScale;
+        }
+    }
+
+
+
 
 
     /// <summary>
@@ -420,5 +500,8 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
+
+    /* -------------------------------------------------- END OF UNITY METHODS -------------------------------------------------- */
 
 }
