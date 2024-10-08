@@ -755,14 +755,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6976840189248446385, guid: c518923126d65474da302b4840bb1ce3, type: 3}
-      propertyPath: xMaxShakingOffset
-      value: 0.15
-      objectReference: {fileID: 0}
-    - target: {fileID: 6976840189248446385, guid: c518923126d65474da302b4840bb1ce3, type: 3}
-      propertyPath: yMaxShakingOffset
-      value: 0.05
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

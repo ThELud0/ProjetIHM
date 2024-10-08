@@ -8,4 +8,16 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/level_1.unity
+    guid: dda546ecfab25c540b1bbf85413aa651
+  - enabled: 1
+    path: Assets/Scenes/StartMenu.unity
+    guid: 09c5741a35659794b819a984003b5506
+  - enabled: 1
+    path: Assets/Scenes/TestPlatforme.unity
+    guid: 22cf77adecc4d144b9d389fa9054fa98
+  - enabled: 1
+    path: Assets/Scenes/TestWallJumpNina.unity
+    guid: d636976268ede9746bd96cfaaab55f41
   m_configObjects: {}

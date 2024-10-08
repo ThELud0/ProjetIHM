@@ -140,7 +140,7 @@ public class PlayerController : MonoBehaviour
         // check if player is near climbable surface
         if (CheckAndReturnIfPlayerCanClimb())
         {
-            //check if player gives climbing input
+            //check if player gives climbing input and set isClimbing bool accordingly
             CheckClimbInputAndSet();
             if (isClimbing  && (Time.time > jumpTimestamp + tempStopClimbCheckTimer))
             {
@@ -506,8 +506,6 @@ public class PlayerController : MonoBehaviour
             //currentScale = initialScale;
         }
     }
-
-
 
 
 
