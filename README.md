@@ -94,8 +94,8 @@ TODO:
 |Dash | Fait | Voir Bug log |
 |Checkpoint | A rajouter dans les scènes ||
 |Plateformes mobiles| A rajouter dans les scènes ||
-|Platformes cassable| A faire ||
-|Platforme Glace| A faire ||
+|Platformes cassable| Fait ||
+|Platforme Glace| Fait ||
 | Lianes| Fait ||
 | Eau | A faire ||
 | Vent | A faire ||

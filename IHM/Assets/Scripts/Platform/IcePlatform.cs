@@ -44,9 +44,7 @@ public class IcePlatform : MonoBehaviour
         {
             PlayerController player = collision.gameObject.GetComponent<PlayerController>();
             if (player != null)
-            {
                 player.moveSpeed = normalSpeed;
-            }
         }
     }
 }
