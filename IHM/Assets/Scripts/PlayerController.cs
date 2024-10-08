@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviour
     public float doubleTapTimeThreshold;
     public float normalGravityScale;
     public float jumpingTimeWindow;
+    public float jumpAnimationTime;
+    public float jumpAnimationSize;
     
 
     private Gamepad manette;
@@ -265,6 +267,8 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void PlayerJumpUp()
     {
+        transform.localScale = new Vector3(transform.localScale.x * jumpAnimationSize, transform.localScale.y * jumpAnimationSize, transform.localScale.z * jumpAnimationSize);
+        Invoke("RestoreSize", jumpAnimationTime);
         player.velocity = new Vector2(player.velocity.x, jumpSpeed);
         jumpCounter--;
         jumpTimestamp = Time.time;
@@ -458,6 +462,11 @@ public class PlayerController : MonoBehaviour
         sprinting = false;
     }
 
+    private void RestoreSize()
+    {
+        transform.localScale = initialScale;
+    }
+
     /* -------------------------------------------------- END OF MISCELLEANOUS METHODS -------------------------------------------------- */
 
 
@@ -482,7 +491,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.tag == "MovingPlatform")
         {
             transform.SetParent(collision.transform, true);
-            currentScale = new Vector3(initialScale.x / collision.transform.localScale.x, initialScale.y / collision.transform.localScale.y, initialScale.z / collision.transform.localScale.z);
+            //currentScale = new Vector3(initialScale.x / collision.transform.localScale.x, initialScale.y / collision.transform.localScale.y, initialScale.z / collision.transform.localScale.z);
         }
     }
 
@@ -492,7 +501,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.tag == "MovingPlatform")
         {
             this.transform.parent = null;
-            currentScale = initialScale;
+            //currentScale = initialScale;
         }
     }
 

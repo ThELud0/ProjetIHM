@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5803095359829559998}
   - component: {fileID: 7813604237869098629}
   - component: {fileID: 6976840189248446385}
+  - component: {fileID: 5207065033535688009}
   m_Layer: 3
   m_Name: CrumblePlatform
   m_TagString: Untagged
@@ -27,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1086296201980868603}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.8099995, y: -4.964898, z: 0}
   m_LocalScale: {x: 3.6485872, y: 0.4, z: 1}
   m_ConstrainProportionsScale: 0
@@ -72,7 +73,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1224572723
+  m_SortingLayerID: 1098450407
   m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
@@ -145,3 +146,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   destructionTime: 1
   repairTime: 1.5
+  lowFrequency: 0.1
+  highFrequency: 0.1
+--- !u!95 &5207065033535688009
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1086296201980868603}
+  m_Enabled: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 149e91eda894e0a4083d71028df9957b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

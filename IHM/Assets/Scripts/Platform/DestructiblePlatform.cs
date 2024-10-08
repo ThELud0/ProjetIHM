@@ -7,9 +7,8 @@ public class DestructiblePlatform : MonoBehaviour
     public float repairTime = 1.5f;
     private GameObject platformPrefab;
 
-    public float vibrationDuration = 0.1f;   // Duration of vibration in seconds
-    public float lowFrequency = 0.2f;        // Intensity for low-frequency motor (0 to 1)
-    public float highFrequency = 0.2f;       // Intensity for high-frequency motor (0 to 1)
+    public float lowFrequency ;        // Intensity for low-frequency motor (0 to 1)
+    public float highFrequency;       // Intensity for high-frequency motor (0 to 1)
 
     private bool onPlatform = false;
 
