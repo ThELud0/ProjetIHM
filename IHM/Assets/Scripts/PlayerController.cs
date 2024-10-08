@@ -192,7 +192,7 @@ public class PlayerController : MonoBehaviour
     private void Dash()
     {
         hasDashed = true;
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, DashDirection, dashSpeed * Time.deltaTime, collisionLayer);
+        /*RaycastHit2D hit = Physics2D.Raycast(transform.position, DashDirection, dashSpeed * Time.deltaTime, collisionLayer);
 
         if (hit.collider != null)
         {
@@ -200,7 +200,7 @@ public class PlayerController : MonoBehaviour
             player.velocity = Vector2.zero;
             transform.position = hit.point - DashDirection * 0.1f;
         }
-        else
+        else*/
             player.velocity = DashDirection * dashSpeed;
 
         CurrentDashTimer -= Time.deltaTime;

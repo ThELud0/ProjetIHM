@@ -350,7 +350,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1224572723
-  m_SortingLayer: 3
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -496,7 +496,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1224572723
-  m_SortingLayer: 3
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -686,7 +686,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1224572723
-  m_SortingLayer: 3
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -713,11 +713,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3526757444316005921, guid: c518923126d65474da302b4840bb1ce3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.8099995
+      value: 5.64
       objectReference: {fileID: 0}
     - target: {fileID: 3526757444316005921, guid: c518923126d65474da302b4840bb1ce3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.964898
+      value: -5.05
       objectReference: {fileID: 0}
     - target: {fileID: 3526757444316005921, guid: c518923126d65474da302b4840bb1ce3, type: 3}
       propertyPath: m_LocalPosition.z
@@ -751,6 +751,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5803095359829559998, guid: c518923126d65474da302b4840bb1ce3, type: 3}
+      propertyPath: m_SortingLayer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5803095359829559998, guid: c518923126d65474da302b4840bb1ce3, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1098450407
+      objectReference: {fileID: 0}
     - target: {fileID: 6976840189248446385, guid: c518923126d65474da302b4840bb1ce3, type: 3}
       propertyPath: repairTime
       value: 1.5
@@ -772,13 +780,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: IcePlatform
       objectReference: {fileID: 0}
+    - target: {fileID: 2696696665629933826, guid: c12025f6309cd4f488a0395b3c5f9531, type: 3}
+      propertyPath: m_SortingLayer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2696696665629933826, guid: c12025f6309cd4f488a0395b3c5f9531, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1098450407
+      objectReference: {fileID: 0}
     - target: {fileID: 2719087899160445978, guid: c12025f6309cd4f488a0395b3c5f9531, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.88
+      value: -2.92
       objectReference: {fileID: 0}
     - target: {fileID: 2719087899160445978, guid: c12025f6309cd4f488a0395b3c5f9531, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.84
+      value: -5.05
       objectReference: {fileID: 0}
     - target: {fileID: 2719087899160445978, guid: c12025f6309cd4f488a0395b3c5f9531, type: 3}
       propertyPath: m_LocalPosition.z
@@ -786,19 +802,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2719087899160445978, guid: c12025f6309cd4f488a0395b3c5f9531, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.99998665
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2719087899160445978, guid: c12025f6309cd4f488a0395b3c5f9531, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2719087899160445978, guid: c12025f6309cd4f488a0395b3c5f9531, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2719087899160445978, guid: c12025f6309cd4f488a0395b3c5f9531, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.005167952
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2719087899160445978, guid: c12025f6309cd4f488a0395b3c5f9531, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -810,7 +826,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2719087899160445978, guid: c12025f6309cd4f488a0395b3c5f9531, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0.592
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7933421483495641959, guid: c12025f6309cd4f488a0395b3c5f9531, type: 3}
       propertyPath: iceSpeedMultiplier
