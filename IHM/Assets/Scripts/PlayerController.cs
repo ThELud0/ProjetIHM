@@ -336,6 +336,7 @@ public class PlayerController : MonoBehaviour
             rightLastTapTime = Time.time;
         }
 
+        //stop sprinting if there is a sudden change in direction
         bool samesign = (move < 0) == (previousMoveDirection < 0);
         if (!samesign)
             sprinting = false;
@@ -344,6 +345,7 @@ public class PlayerController : MonoBehaviour
         if (sprinting)
             move *= sprintSpeedCoef;
         
+        //record current direction as previous move direction for future iteration
         if (Time.time > previousMoveDirectionTimestamp + previousMoveDirectionTimestampOffset)
         {
             previousMoveDirection = move;
