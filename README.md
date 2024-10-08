@@ -98,7 +98,17 @@ TODO:
 |Platforme Glace| Fait ||
 | Lianes| Fait ||
 | Eau | A faire ||
-| Vent | A faire ||
+| Vent | Fait ||
+| Vibration platforme | Fait||
+| Menu Départ | A faire L | |
+| Feedback saut | Fait ||
+| Feedback grimper | A faire L ||
+| Menu Settings | A faire L | GUI pour activer/desactiver feedback |
+| Trigger movement caméra | A faire N | Faire une zone ou deux surpoposé qui quand triggered, vient déplacer la caméra vers une autre partie du niveau |
+| Feedback Dash | A Faire N ||
+
+
+
 
 
 
