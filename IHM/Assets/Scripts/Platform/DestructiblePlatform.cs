@@ -10,13 +10,33 @@ public class DestructiblePlatform : MonoBehaviour
     public float lowFrequency ;        // Intensity for low-frequency motor (0 to 1)
     public float highFrequency;       // Intensity for high-frequency motor (0 to 1)
 
+    //public float yMinShakingOffset;
+    //public float xMinShakingOffset;
+    public float yMaxShakingOffset;
+    public float xMaxShakingOffset;
+
     private bool onPlatform = false;
 
     private Gamepad gamepad;
+    private Vector2 initialPosition;
+    private float xShakingOffset;
+    private float yShakingOffset;
+    private bool crumbling = false;
 
     private void Start()
     {
         platformPrefab = gameObject;
+        initialPosition = transform.position;
+    }
+
+    private void Update()
+    {
+        if (crumbling)
+        {
+            xShakingOffset = Random.Range(-xMaxShakingOffset, xMaxShakingOffset);
+            yShakingOffset = Random.Range(-yMaxShakingOffset, yMaxShakingOffset);
+            transform.position = new Vector2(initialPosition.x + xShakingOffset, initialPosition.y + yShakingOffset);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)//#TODO_N collision from under activates this too, check with the correct corner
@@ -25,6 +45,8 @@ public class DestructiblePlatform : MonoBehaviour
         {
             Invoke("DestroyPlatform", destructionTime);
         }
+        crumbling = true;
+        
     }
 
     private void OnCollisionStay2D(Collision2D collision)
@@ -47,12 +69,14 @@ public class DestructiblePlatform : MonoBehaviour
         }
 
         gameObject.SetActive(false);
+        crumbling = false;
         Invoke("RepairPlatform", repairTime);
     }
 
     private void RepairPlatform()
     {
         gameObject.SetActive(true);
+        transform.position = initialPosition;
     }
 
     // Call this function to give vibration feedback
@@ -65,6 +89,7 @@ public class DestructiblePlatform : MonoBehaviour
             gamepad.SetMotorSpeeds(lowFrequency, highFrequency);
 
         }
+        
     }
 
     // Stop the vibration
@@ -74,6 +99,7 @@ public class DestructiblePlatform : MonoBehaviour
         {
             gamepad.SetMotorSpeeds(0, 0); // Stop vibration
         }
+        
     }
 
 

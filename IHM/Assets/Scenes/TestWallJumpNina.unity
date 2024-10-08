@@ -525,18 +525,6 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 4867648790654554194, guid: 51391c43bdc885448b8ba4b689a4b62e, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.5374
-      objectReference: {fileID: 0}
-    - target: {fileID: 4867648790654554194, guid: 51391c43bdc885448b8ba4b689a4b62e, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.5374
-      objectReference: {fileID: 0}
-    - target: {fileID: 4867648790654554194, guid: 51391c43bdc885448b8ba4b689a4b62e, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.5374
-      objectReference: {fileID: 0}
-    - target: {fileID: 4867648790654554194, guid: 51391c43bdc885448b8ba4b689a4b62e, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.37
       objectReference: {fileID: 0}
@@ -575,14 +563,6 @@ PrefabInstance:
     - target: {fileID: 4867648790654554194, guid: 51391c43bdc885448b8ba4b689a4b62e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8168791171528750798, guid: 51391c43bdc885448b8ba4b689a4b62e, type: 3}
-      propertyPath: jumpAnimationSize
-      value: 0.85
-      objectReference: {fileID: 0}
-    - target: {fileID: 8168791171528750798, guid: 51391c43bdc885448b8ba4b689a4b62e, type: 3}
-      propertyPath: jumpAnimationTime
-      value: 0.15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
