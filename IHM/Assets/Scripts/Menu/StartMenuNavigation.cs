@@ -7,11 +7,16 @@ using UnityEngine.SceneManagement;
 public class MenuNavigation : MonoBehaviour
 {
     public Button startButton;  // The button to be selected by default
+    public Button quitButton;
+    public Button settingsButton;
 
     private void Start()
     {
         // Automatically select the Start button when the menu loads
         EventSystem.current.SetSelectedGameObject(startButton.gameObject);
+        startButton.onClick.AddListener(LoadLevel);
+        quitButton.onClick.AddListener(QuitGame);
+        settingsButton.onClick.AddListener (LoadSettings);
     }
 
     private void Update()
@@ -44,7 +49,8 @@ public class MenuNavigation : MonoBehaviour
     // Method to load the Settings scene
     public void LoadSettings()
     {
-        SceneManager.LoadScene("settings");
+        Debug.Log("settings");
+        //SceneManager.LoadScene("settings");
     }
 
     // Method to quit the application

@@ -496,6 +496,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startButton: {fileID: 824001131}
+  quitButton: {fileID: 982366183}
+  settingsButton: {fileID: 1735874648}
 --- !u!4 &1053121142
 Transform:
   m_ObjectHideFlags: 0

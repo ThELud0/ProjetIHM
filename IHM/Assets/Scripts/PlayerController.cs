@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour
     public float jumpingTimeWindow;
     public float jumpAnimationTime;
     public float jumpAnimationSize;
+    public bool playerJumpAnimationActivated = true;
     
 
     private Gamepad manette;
@@ -125,17 +126,21 @@ public class PlayerController : MonoBehaviour
 
 
         HorizontalMovement();
+
         CheckIfTouchingWall();
         if (isTouchingWall)
         {
             if (!wallJumpRefreshed)
             {
+                Debug.Log("wallJumpRefreshed");
                 jumpCounter = maxJumpAmount;
                 wallJumpRefreshed = true;
-            }
+            } 
         }
-        else
+        else if (!isTouchingWall)
             wallJumpRefreshed = false;
+        
+
 
         // check if player is near climbable surface
         if (CheckAndReturnIfPlayerCanClimb())
@@ -236,29 +241,21 @@ public class PlayerController : MonoBehaviour
         else
             canStillJump = false;
 
-            if ((Input.GetButtonDown("Jump")) && (jumpCounter == maxJumpAmount))
-        {
-            if (canStillJump)
-                PlayerJumpUp();
-        }
-        //check for jump input and make player jump if there are jumps remaining in jump counter
-        else if ((Input.GetButtonDown("Jump")) && (jumpCounter > 0))
+        if ((Input.GetButtonDown("Jump")) && (jumpCounter == maxJumpAmount) && canStillJump)
+            PlayerJumpUp();
+        
+        else if ((Input.GetButtonDown("Jump")) && (jumpCounter > 0) && (jumpCounter < maxJumpAmount)) //check for jump input and make player jump if there are jumps remaining in jump counter and player is in air
         {
             PlayerJumpUp();
 
         }
         else if (manette != null)
         {
-            if ((manette.buttonSouth.wasPressedThisFrame) && (jumpCounter == maxJumpAmount))
-            {
-                if (canStillJump)
-                    PlayerJumpUp();
-            }
-            // check gamepad jump input
-            else if ((manette.buttonSouth.wasPressedThisFrame) && (jumpCounter > 0))
-            {
+            if ((manette.buttonSouth.wasPressedThisFrame) && (jumpCounter == maxJumpAmount) && canStillJump)
                 PlayerJumpUp();
-            }
+            else if ((manette.buttonSouth.wasPressedThisFrame) && (jumpCounter > 0) && (jumpCounter < maxJumpAmount))             // check gamepad jump input
+                PlayerJumpUp();
+            
         }
     }
 
@@ -267,11 +264,24 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void PlayerJumpUp()
     {
-        transform.localScale = new Vector3(transform.localScale.x * jumpAnimationSize, transform.localScale.y * jumpAnimationSize, transform.localScale.z * jumpAnimationSize);
-        Invoke("RestoreSize", jumpAnimationTime);
+        PlayerJumpAnimation();
         player.velocity = new Vector2(player.velocity.x, jumpSpeed);
         jumpCounter--;
         jumpTimestamp = Time.time;
+    }
+
+
+    private void PlayerJumpAnimation()
+    {
+        if (playerJumpAnimationActivated)
+        {
+            transform.localScale = new Vector3(transform.localScale.x * jumpAnimationSize, transform.localScale.y * jumpAnimationSize, transform.localScale.z * jumpAnimationSize);
+            wallCheckRadius += 0.1f;
+            groundCheckRadius += 0.1f;
+            climbCheckRadius += 0.05f;
+            Invoke("RestoreSize", jumpAnimationTime);
+        }
+        
     }
 
     /* -------------------------------------------------- END OF JUMP METHODS -------------------------------------------------- */
@@ -467,9 +477,15 @@ public class PlayerController : MonoBehaviour
     private void RestoreSize()
     {
         transform.localScale = initialScale;
+        wallCheckRadius -= 0.1f;
+        groundCheckRadius -= 0.1f;
+        climbCheckRadius -= 0.05f;
     }
 
     /* -------------------------------------------------- END OF MISCELLEANOUS METHODS -------------------------------------------------- */
+
+
+
 
 
     /* -------------------------------------------------- BEGINNING OF UNITY METHODS -------------------------------------------------- */
