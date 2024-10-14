@@ -279,10 +279,7 @@ public class PlayerController : MonoBehaviour
     {
         if (playerJumpAnimationActivated)
         {
-            transform.localScale = new Vector3(transform.localScale.x * jumpAnimationSize, transform.localScale.y * jumpAnimationSize, transform.localScale.z * jumpAnimationSize);
-            wallCheckRadius += 0.1f;
-            groundCheckRadius += 0.1f;
-            climbCheckRadius += 0.05f;
+            DecreaseSize();
             Invoke("RestoreSize", jumpAnimationTime);
         }
         
@@ -451,11 +448,11 @@ public class PlayerController : MonoBehaviour
         {
             if (isClimbing)
             {
-                playerSprite.color = Color.green;
+                ChangeColor(Color.green);
             }
             else
             {
-                playerSprite.color = Color.white;
+                ChangeColor(Color.white);
             }
         }
     }
@@ -493,6 +490,14 @@ public class PlayerController : MonoBehaviour
         sprinting = false;
     }
 
+    private void DecreaseSize()
+    {
+        transform.localScale = new Vector3(initialScale.x * jumpAnimationSize, initialScale.y * jumpAnimationSize, initialScale.z * jumpAnimationSize);
+        wallCheckRadius += 0.1f;
+        groundCheckRadius += 0.1f;
+        climbCheckRadius += 0.05f;
+    }
+
     private void RestoreSize()
     {
         transform.localScale = initialScale;
@@ -500,6 +505,12 @@ public class PlayerController : MonoBehaviour
         groundCheckRadius -= 0.1f;
         climbCheckRadius -= 0.05f;
     }
+
+    private void ChangeColor(Color color)
+    {
+        playerSprite.color = color;
+    }
+
 
     /* -------------------------------------------------- END OF MISCELLEANOUS METHODS -------------------------------------------------- */
 
