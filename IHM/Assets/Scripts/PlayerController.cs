@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
     public float jumpAnimationTime;
     public float jumpAnimationSize;
     public bool playerJumpAnimationActivated = true;
+    public bool playerClimbAnimationActivated = true;
     
 
     private Gamepad manette;
@@ -58,6 +59,7 @@ public class PlayerController : MonoBehaviour
     private float canStillJumpTimestamp = 0f;
 
     private Rigidbody2D player;
+    private SpriteRenderer playerSprite;
     private Vector2 direction;
     private float previousMoveDirection = 0f;
     private float previousMoveDirectionTimestamp = 0f;
@@ -84,6 +86,7 @@ public class PlayerController : MonoBehaviour
 
 
         player = GetComponent<Rigidbody2D>();
+        playerSprite = GetComponent<SpriteRenderer>();
         manette = Gamepad.current;
         isClimbing = false;
         jumpRefreshed = false;
@@ -164,6 +167,7 @@ public class PlayerController : MonoBehaviour
         {
             NotClimbingOrStopped(); //player cannot be climbing if not near climbable surface
         }
+        ClimbAnimation();
 
 
         CheckAndExecuteJump();
@@ -439,6 +443,21 @@ public class PlayerController : MonoBehaviour
             return true;
         else
             return false;
+    }
+
+    private void ClimbAnimation()
+    {
+        if (playerClimbAnimationActivated)
+        {
+            if (isClimbing)
+            {
+                playerSprite.color = Color.green;
+            }
+            else
+            {
+                playerSprite.color = Color.white;
+            }
+        }
     }
 
 
