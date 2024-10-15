@@ -408,6 +408,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void NotClimbingOrStopped()
     {
+
         isClimbing = false;
         jumpRefreshed = false;
 
@@ -425,6 +426,7 @@ public class PlayerController : MonoBehaviour
         }
         sprinting = false;
         isClimbing = true;
+        
     }
 
     /// <summary>

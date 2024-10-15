@@ -192,7 +192,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   groundCheckRadius: 0.05
-  climbCheckRadius: 0.02
+  climbCheckRadius: 0.03
   wallCheckRadius: 0.05
   maxJumpAmount: 1
   sprintSpeedCoef: 2
@@ -201,6 +201,8 @@ MonoBehaviour:
   jumpingTimeWindow: 0.15
   jumpAnimationTime: 0.15
   jumpAnimationSize: 0.85
+  playerJumpAnimationActivated: 1
+  playerClimbAnimationActivated: 1
   DashTime: 0.3
   dashSpeed: 30
   collisionLayer:
