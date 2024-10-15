@@ -26,8 +26,7 @@ public class PlayerController : MonoBehaviour
     public float jumpingTimeWindow;
     public float jumpAnimationTime;
     public float jumpAnimationSize;
-    public bool playerJumpAnimationActivated = true;
-    public bool playerClimbAnimationActivated = true;
+
     
 
     private Gamepad manette;
@@ -274,7 +273,7 @@ public class PlayerController : MonoBehaviour
 
     private void PlayerJumpAnimation()
     {
-        if (playerJumpAnimationActivated)
+        if (FeedbackAnimationParameters.playerJumpAnimationActivated)
         {
             DecreaseSize();
             Invoke("RestoreSize", jumpAnimationTime);
@@ -454,7 +453,7 @@ public class PlayerController : MonoBehaviour
 
     private void ClimbAnimation()
     {
-        if (playerClimbAnimationActivated)
+        if (FeedbackAnimationParameters.playerClimbAnimationActivated)
         {
             if (isClimbing)
             {
@@ -502,7 +501,7 @@ public class PlayerController : MonoBehaviour
 
     private void DecreaseSize()
     {
-        transform.localScale = new Vector3(initialScale.x * jumpAnimationSize, initialScale.y * jumpAnimationSize, initialScale.z * jumpAnimationSize);
+        transform.localScale = new Vector3(currentScale.x * jumpAnimationSize, currentScale.y * jumpAnimationSize, currentScale.z * jumpAnimationSize);
         wallCheckRadius += 0.1f;
         groundCheckRadius += 0.1f;
         climbCheckRadius += 0.05f;
@@ -510,7 +509,7 @@ public class PlayerController : MonoBehaviour
 
     private void RestoreSize()
     {
-        transform.localScale = initialScale;
+        transform.localScale = currentScale;
         wallCheckRadius -= 0.1f;
         groundCheckRadius -= 0.1f;
         climbCheckRadius -= 0.05f;
@@ -549,7 +548,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.tag == "MovingPlatform")
         {
             transform.SetParent(collision.transform, true);
-            //currentScale = new Vector3(initialScale.x / collision.transform.localScale.x, initialScale.y / collision.transform.localScale.y, initialScale.z / collision.transform.localScale.z);
+            currentScale = new Vector3(initialScale.x / collision.transform.localScale.x, initialScale.y / collision.transform.localScale.y, initialScale.z / collision.transform.localScale.z);
         }
     }
 
@@ -559,7 +558,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.tag == "MovingPlatform")
         {
             this.transform.parent = null;
-            //currentScale = initialScale;
+            currentScale = initialScale;
         }
     }
 

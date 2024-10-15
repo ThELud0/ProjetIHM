@@ -32,11 +32,7 @@ public class MenuNavigation : MonoBehaviour
 
     private void Update()
     {
-        // If no button is selected, ensure the Start button is selected by default
-        if (EventSystem.current.currentSelectedGameObject == null)
-        {
-            EventSystem.current.SetSelectedGameObject(startButton.gameObject);
-        }
+
 
         // Detect A button (Gamepad) or Enter key (Keyboard) for button activation
         if (!isSettingsOpen && (Keyboard.current.enterKey.wasPressedThisFrame ||
@@ -68,7 +64,11 @@ public class MenuNavigation : MonoBehaviour
 
             // Show the pop-up panel
             settingsPanel.SetActive(true);
+
+            SetStartMenuButtonsState(false);
             Debug.Log("Settings Panel Activated");
+
+            
 
             // Set the flag to indicate settings are open
             isSettingsOpen = true;
@@ -94,6 +94,7 @@ public class MenuNavigation : MonoBehaviour
             // Hide the settings panel
             settingsPanel.SetActive(false);
 
+            SetStartMenuButtonsState(true);
 
             Invoke("SetCloseSettingsBoolFalse", 0.05f);
             // Restore the previously selected button in the main menu
@@ -115,4 +116,12 @@ public class MenuNavigation : MonoBehaviour
     {
         isSettingsOpen = false;
     }
+
+    private void SetStartMenuButtonsState(bool state)
+    {
+        startButton.gameObject.SetActive(state);
+        settingsButton.gameObject.SetActive(state);
+        quitButton.gameObject.SetActive(state);
+    }
+
 }
