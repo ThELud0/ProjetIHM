@@ -77,6 +77,7 @@ public class PlayerController : MonoBehaviour
     public float dashSpeed = 30f;
     public LayerMask collisionLayer;//#TODO_N there is still problems with collision I should deal with, maybe in the matrix ?
     private bool hasDashed = false;
+    TrailRenderer trail;
 
     /* -------------------------------------------------- BEGINNING OF START METHOD -------------------------------------------------- */
     void Start()
@@ -94,6 +95,9 @@ public class PlayerController : MonoBehaviour
         respawnPoint = transform.position;
         initialScale = transform.localScale;
         currentScale = initialScale;
+
+        trail = GetComponent<TrailRenderer>();
+        trail.emitting = false;
     }
 
     /* -------------------------------------------------- END OF START METHOD -------------------------------------------------- */
@@ -188,6 +192,7 @@ public class PlayerController : MonoBehaviour
             player.velocity = Vector2.zero;
 
             DashDirection = new Vector2(moveX, moveY).normalized;
+            trail.emitting = true;
         }
 
         if (IsDashing)
@@ -203,23 +208,15 @@ public class PlayerController : MonoBehaviour
     private void Dash()
     {
         hasDashed = true;
-        /*RaycastHit2D hit = Physics2D.Raycast(transform.position, DashDirection, dashSpeed * Time.deltaTime, collisionLayer);
-
-        if (hit.collider != null)
-        {
-            IsDashing = false;
-            player.velocity = Vector2.zero;
-            transform.position = hit.point - DashDirection * 0.1f;
-        }
-        else*/
-            player.velocity = DashDirection * dashSpeed;
+        player.velocity = DashDirection * dashSpeed;
 
         CurrentDashTimer -= Time.deltaTime;
 
         if (CurrentDashTimer <= 0)
         {
             IsDashing = false;
-            player.velocity = Vector2.zero; //#TODO_N stop dashing less violently maybe ?
+            player.velocity = Vector2.zero;
+            trail.emitting = false;
         }
     }
 
@@ -320,37 +317,36 @@ public class PlayerController : MonoBehaviour
 
         if (manette != null)
         {
-            if ((manette.leftShoulder.isPressed)&&isGrounded)
-                sprinting = true;
+            if ((manette.leftShoulder.isPressed) && isGrounded)
+                Sprint();
             else if (manette.leftShoulder.wasReleasedThisFrame)
-                sprinting = false;
+                EndSprint();
         }
 
         // Check for a double tap on Q key
         if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(leftSprintKeyboardInput)) //Unity adapté à clavier QWERTY... donc Q = A :')
         {
-            sprinting = false;
-            if ((Time.time - leftLastTapTime <= doubleTapTimeThreshold)&&isGrounded)
-            {
-                sprinting = true;
-            }
+            if ((Time.time - leftLastTapTime <= doubleTapTimeThreshold) && isGrounded)
+                Sprint();
+            else
+                EndSprint();
             leftLastTapTime = Time.time;
         }
         // Check for a double tap on D key
         if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(rightSprintKeyboardInput))
         {
-            sprinting = false;
             if ((Time.time - rightLastTapTime <= doubleTapTimeThreshold)&& isGrounded)
-            {
-                sprinting = true;
-            }
+                Sprint();
+            else
+                EndSprint();
+            
             rightLastTapTime = Time.time;
         }
 
         //stop sprinting if there is a sudden change in direction
         bool samesign = (move < 0) == (previousMoveDirection < 0);
         if (!samesign)
-            sprinting = false;
+            EndSprint();
 
 
         if (sprinting)
@@ -365,6 +361,18 @@ public class PlayerController : MonoBehaviour
 
 
         return move;
+    }
+
+    private void Sprint()
+    {
+        sprinting = true;
+        trail.emitting = true;
+    }
+
+    private void EndSprint()
+    {
+        sprinting = false;
+        trail.emitting = false;
     }
 
     /* -------------------------------------------------- END OF MOVEMENT METHODS -------------------------------------------------- */
