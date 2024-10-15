@@ -122,10 +122,7 @@ TODO:
 | Tuto en text sur le niveau | A faire ||
 | Thème visuel/background | A faire ||
 | Info boutton + possibilité de cacher ces infos | A faire ||
-
-
-
-
+| Objets | A faire ||
 
 
 
