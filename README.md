@@ -86,26 +86,43 @@ TODO:
 |Tache|Etat|Commentaire|
 |----|-----|------------|
 |Jump| Fait| |
-|Wall jump| Fait/A revoir | Voir le nombre de wall jump possible|
+|Wall jump| Fait | |
 |Sprint|Fait|  |
 |Déplacement | Fait |  |
 |S'accrocher | Fait |  |
 |Grimper| Fait |  |
-|Dash | Fait | Voir Bug log |
-|Checkpoint | A rajouter dans les scènes ||
-|Plateformes mobiles| A rajouter dans les scènes ||
+|Dash | Fait | |
+|Checkpoint | Fait ||
+|Plateformes mobiles| Fait ||
 |Platformes cassable| Fait ||
 |Platforme Glace| Fait ||
 | Lianes| Fait ||
-| Eau | A faire ||
+| Eau | A faire ? ||
 | Vent | Fait ||
 | Vibration platforme | Fait||
 | Menu Départ | A faire L | |
 | Feedback saut | Fait ||
-| Feedback grimper | A faire L ||
+| Feedback grimper | Fait ||
 | Menu Settings | A faire L | GUI pour activer/desactiver feedback |
-| Trigger movement caméra | A faire N | Faire une zone ou deux surpoposé qui quand triggered, vient déplacer la caméra vers une autre partie du niveau |
-| Feedback Dash | A Faire N ||
+| Trigger movement caméra | Fait | |
+| Feedback Dash | Fait | plus ou moins |
+| Faire niveau 1 | A faire N ||
+| Faire niveau 2 | Decider si on veut le faire ||
+| Faire selection de niveau |  Si plusieurs niveaux ||
+| Faire UI | A faire ||
+| Faire Collectibles | A faire ||
+| Ajouter feedback chute et saut | A faire ? ||
+
+
+### SSI temps suplémentaire à la fin
+
+|Tache|Etat|Commentaire|
+|----|-----|------------|
+| Animation déplacement du joueur | A faire ||
+| Tuto en text sur le niveau | A faire ||
+| Thème visuel/background | A faire ||
+| Info boutton + possibilité de cacher ces infos | A faire ||
+
 
 
 
