@@ -196,14 +196,14 @@ MonoBehaviour:
   climbCheckRadius: 0.03
   wallCheckRadius: 0.05
   maxJumpAmount: 1
-  sprintSpeedCoef: 2
+  sprintSpeedCoef: 2.5
   doubleTapTimeThreshold: 0.3
   normalGravityScale: 5
   jumpingTimeWindow: 0.15
   jumpAnimationTime: 0.15
   jumpAnimationSize: 0.85
-  DashTime: 0.3
-  dashSpeed: 30
+  DashTime: 0.25
+  dashSpeed: 50
   collisionLayer:
     serializedVersion: 2
     m_Bits: 0
