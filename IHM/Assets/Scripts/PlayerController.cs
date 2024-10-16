@@ -191,7 +191,7 @@ public class PlayerController : MonoBehaviour
             player.velocity = Vector2.zero;
 
             DashDirection = new Vector2(moveX, moveY).normalized;
-            trail.emitting = true;
+            SetTrailEmissionState(true);
         }
 
         if (IsDashing)
@@ -215,7 +215,8 @@ public class PlayerController : MonoBehaviour
         {
             IsDashing = false;
             player.velocity = Vector2.zero;
-            trail.emitting = false;
+            if (!sprinting)
+                SetTrailEmissionState(false);
         }
     }
 
@@ -271,15 +272,7 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    private void PlayerJumpAnimation()
-    {
-        if (FeedbackAnimationParameters.playerJumpAnimationActivated)
-        {
-            DecreaseSize();
-            Invoke("RestoreSize", jumpAnimationTime);
-        }
-        
-    }
+
 
     /* -------------------------------------------------- END OF JUMP METHODS -------------------------------------------------- */
 
@@ -365,13 +358,14 @@ public class PlayerController : MonoBehaviour
     private void Sprint()
     {
         sprinting = true;
-        trail.emitting = true;
+        SetTrailEmissionState(true);
     }
 
     private void EndSprint()
     {
         sprinting = false;
-        trail.emitting = false;
+        if (!IsDashing)
+            SetTrailEmissionState(false);
     }
 
     /* -------------------------------------------------- END OF MOVEMENT METHODS -------------------------------------------------- */
@@ -451,6 +445,16 @@ public class PlayerController : MonoBehaviour
             return false;
     }
 
+
+
+
+    /* -------------------------------------------------- END OF CLIMBING METHODS -------------------------------------------------- */
+
+
+
+
+    /* -------------------------------------------------- BEGINNING OF FEEDBACK/ANIMATION METHODS -------------------------------------------------- */
+
     private void ClimbAnimation()
     {
         if (FeedbackAnimationParameters.playerClimbAnimationActivated)
@@ -464,10 +468,33 @@ public class PlayerController : MonoBehaviour
                 ChangeColor(Color.white);
             }
         }
+        else
+            ChangeColor(Color.white);
+    }
+
+    private void PlayerJumpAnimation()
+    {
+        if (FeedbackAnimationParameters.playerJumpAnimationActivated)
+        {
+            DecreaseSize();
+            Invoke("RestoreSize", jumpAnimationTime);
+        }
+
+    }
+
+    private void SetTrailEmissionState(bool state)
+    {
+        if (FeedbackAnimationParameters.playerTrailAnimationActivated)
+            trail.emitting = state;
+        else
+            trail.emitting = false;
     }
 
 
-    /* -------------------------------------------------- END OF CLIMBING METHODS -------------------------------------------------- */
+    /* -------------------------------------------------- END OF FEEDBACK/ANIMATION METHODS -------------------------------------------------- */
+
+
+
 
 
     /* -------------------------------------------------- BEGINNING OF MISCELLEANOUS METHODS -------------------------------------------------- */

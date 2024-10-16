@@ -6,4 +6,5 @@ public static class FeedbackAnimationParameters
 {
     public static bool playerJumpAnimationActivated = true;
     public static bool playerClimbAnimationActivated = true;
+    public static bool playerTrailAnimationActivated = true;
 }
