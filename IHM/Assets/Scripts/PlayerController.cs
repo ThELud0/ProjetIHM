@@ -55,6 +55,7 @@ public class PlayerController : MonoBehaviour
     private bool wallJumpRefreshed;
     private bool isTouchingWall;
     private bool canStillJump;
+    private bool trailLocked;
     private float canStillJumpTimestamp = 0f;
 
     private Rigidbody2D player;
@@ -97,6 +98,7 @@ public class PlayerController : MonoBehaviour
 
         trail = GetComponent<TrailRenderer>();
         trail.emitting = false;
+        trailLocked = false;
     }
 
     /* -------------------------------------------------- END OF START METHOD -------------------------------------------------- */
@@ -215,6 +217,7 @@ public class PlayerController : MonoBehaviour
         {
             IsDashing = false;
             player.velocity = Vector2.zero;
+
             if (!sprinting)
                 SetTrailEmissionState(false);
         }
@@ -484,7 +487,7 @@ public class PlayerController : MonoBehaviour
 
     private void SetTrailEmissionState(bool state)
     {
-        if (FeedbackAnimationParameters.playerTrailAnimationActivated)
+        if (FeedbackAnimationParameters.playerTrailAnimationActivated && !trailLocked)
             trail.emitting = state;
         else
             trail.emitting = false;
@@ -517,6 +520,11 @@ public class PlayerController : MonoBehaviour
     private void InitializePlayerAtCheckPoint()
     {
         transform.position = respawnPoint;
+        trail.time = 0.23f;
+    }
+
+    private void ResetPlayerState()
+    {
         player.velocity = new Vector2(0, 0);
         jumpRefreshed = false;
         wallJumpRefreshed = false;
@@ -524,6 +532,12 @@ public class PlayerController : MonoBehaviour
         isClimbing = false;
         hasDashed = false;
         sprinting = false;
+        isClimbing = false;
+        isGrounded = false;
+        isTouchingWall = false;
+        TrailTemporaryLock();
+        trail.time = 0.01f;
+        trail.emitting = false;
     }
 
     private void DecreaseSize()
@@ -547,6 +561,17 @@ public class PlayerController : MonoBehaviour
         playerSprite.color = color;
     }
 
+    private void TrailTemporaryLock()
+    {
+        trailLocked = true;
+        Invoke("TrailUnlock",0.1f);
+    }
+
+    private void TrailUnlock()
+    {
+        trailLocked = false;
+    }
+
 
     /* -------------------------------------------------- END OF MISCELLEANOUS METHODS -------------------------------------------------- */
 
@@ -557,8 +582,9 @@ public class PlayerController : MonoBehaviour
     /* -------------------------------------------------- BEGINNING OF UNITY METHODS -------------------------------------------------- */
 
     void OnBecameInvisible()
-    {
-        InitializePlayerAtCheckPoint();
+    {   
+        ResetPlayerState();
+        Invoke("InitializePlayerAtCheckPoint",0.05f);
     }
 
 
