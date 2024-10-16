@@ -5,38 +5,78 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class StartMenuNavigation : MonoBehaviour
+public class PauseMenuNavigation : MonoBehaviour
 {
-    public Button startButton;  // The button to be selected by default
+    public Button resumeButton;  // The button to be selected by default
+    public Button homeButton;
     public Button quitButton;
     public Button settingsButton;
     public GameObject settingsPanel;
+    public GameObject pauseMenuUI;
     public Button settingsReturnButton;
 
     private GameObject previousSelectedButton;
     private Button selectedButton;
     private bool isSettingsOpen; // Flag to track if settings are open
+    public static bool isPaused ;
+
+
 
     private void Start()
     {
         // Automatically select the Start button when the menu loads
-        EventSystem.current.SetSelectedGameObject(startButton.gameObject);
+        EventSystem.current.SetSelectedGameObject(resumeButton.gameObject);
 
-        startButton.onClick.AddListener(LoadLevel);
+        resumeButton.onClick.AddListener(Resume);
         quitButton.onClick.AddListener(QuitGame);
         settingsButton.onClick.AddListener(LoadSettings);
         settingsReturnButton.onClick.AddListener(CloseSettings);
-
+        homeButton.onClick.AddListener(ReturnToStartMenu);
         settingsPanel.SetActive(false);
+        pauseMenuUI.SetActive(false);
         isSettingsOpen = false;
+        isPaused = false;
+        Time.timeScale = 1f;
     }
 
+    private void Update()
+    {
 
+        // Check if the player presses the Pause key (Escape or Start on a controller)
+        if (Input.GetKeyDown(KeyCode.Escape) || ((Gamepad.current != null) && Gamepad.current.startButton.wasPressedThisFrame))
+        {
+            if (isPaused)
+            {
+                Resume();
+            }
+            else
+            {
+                Pause();
+            }
+        }
+
+    }
+
+    // Resume the game
+    public void Resume()
+    {
+        pauseMenuUI.SetActive(false);  // Hide pause menu UI
+        Time.timeScale = 1f;  // Resume game time
+        isPaused = false;
+    }
+
+    // Pause the game
+    void Pause()
+    {
+        pauseMenuUI.SetActive(true);  // Show pause menu UI
+        Time.timeScale = 0f;  // Freeze game time
+        isPaused = true;
+    }
 
     // Method to load the Level 1 scene
-    public void LoadLevel()
+    public void ReturnToStartMenu()
     {
-        SceneManager.LoadScene("level_1");
+        SceneManager.LoadScene("StartMenu");
     }
 
     // Method to load the Settings panel
@@ -44,16 +84,13 @@ public class StartMenuNavigation : MonoBehaviour
     {
         if (!isSettingsOpen)
         {
- 
-
             // Store the currently selected button in the main menu
             previousSelectedButton = EventSystem.current.currentSelectedGameObject;
 
             // Show the pop-up panel
             settingsPanel.SetActive(true);
 
-            SetStartMenuButtonsState(false);
-   
+            SetPauseMenuUIState(false);
 
             // Set the flag to indicate settings are open
             isSettingsOpen = true;
@@ -79,22 +116,20 @@ public class StartMenuNavigation : MonoBehaviour
             // Hide the settings panel
             settingsPanel.SetActive(false);
 
-            SetStartMenuButtonsState(true);
-
-            // Restore the previously selected button in the main menu
+            SetPauseMenuUIState(true);
 
             EventSystem.current.SetSelectedGameObject(previousSelectedButton);
 
             isSettingsOpen = false;
 
+
         }
     }
 
-    private void SetStartMenuButtonsState(bool state)
+
+    private void SetPauseMenuUIState(bool state)
     {
-        startButton.gameObject.SetActive(state);
-        settingsButton.gameObject.SetActive(state);
-        quitButton.gameObject.SetActive(state);
+        pauseMenuUI.SetActive(state);
     }
 
 }
