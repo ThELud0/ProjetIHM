@@ -202,8 +202,6 @@ MonoBehaviour:
   jumpingTimeWindow: 0.15
   jumpAnimationTime: 0.15
   jumpAnimationSize: 0.85
-  playerJumpAnimationActivated: 1
-  playerClimbAnimationActivated: 1
   DashTime: 0.3
   dashSpeed: 30
   collisionLayer:
