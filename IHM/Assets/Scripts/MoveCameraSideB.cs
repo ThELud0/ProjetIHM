@@ -1,26 +1,39 @@
+using System.Diagnostics;
 using UnityEngine;
-using System.Collections;
 
 public class MoveCameraSideB : MonoBehaviour
 {
-    public Transform targetPosition;
+    public Transform targetCameraPos;
+    public Transform previousCameraPos;
     public float cameraMoveSpeed = 2f;
+
+    private Transform currentTarget;
+    private bool isMoving = false;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && Vector3.Distance(Camera.main.transform.position, targetPosition.position) != 0)
+        if (collision.CompareTag("Player"))
         {
-            StartCoroutine(MoveCamera());
+            float distanceToPrevious = Vector3.Distance(Camera.main.transform.position, previousCameraPos.position);
+            float distanceToTarget = Vector3.Distance(Camera.main.transform.position, targetCameraPos.position);
+
+            currentTarget = distanceToPrevious < distanceToTarget ? targetCameraPos : previousCameraPos;
+            isMoving = true;
         }
     }
 
-    private IEnumerator MoveCamera()
+    private void Update()
     {
-        while (Vector3.Distance(Camera.main.transform.position, targetPosition.position) > 0.05f)
+        if (isMoving)
         {
-            Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, targetPosition.position, cameraMoveSpeed * Time.deltaTime);
-            yield return null;
+            Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, currentTarget.position, cameraMoveSpeed * Time.deltaTime);
+
+            if (Vector3.Distance(Camera.main.transform.position, currentTarget.position) < 0.05f)
+            {
+                Camera.main.transform.position = currentTarget.position;
+                isMoving = false;
+            }
+            UnityEngine.Debug.Log(isMoving);
         }
-        Camera.main.transform.position = targetPosition.position;
     }
 }
