@@ -31,7 +31,7 @@ public class DestructiblePlatform : MonoBehaviour
 
     private void Update()
     {
-        if (crumbling)
+        if (crumbling && FeedbackAnimationParameters.crumblingPlatformShakeAnimation)
         {
             xShakingOffset = Random.Range(-xMaxShakingOffset, xMaxShakingOffset);
             yShakingOffset = Random.Range(-yMaxShakingOffset, yMaxShakingOffset);
@@ -83,7 +83,7 @@ public class DestructiblePlatform : MonoBehaviour
     public void Vibrate()
     {
         gamepad = Gamepad.current;
-        if (gamepad != null)
+        if ((gamepad != null)&&FeedbackAnimationParameters.crumblingPlatformControllerShakeAnimation)
         {
             // Set gamepad vibration for both low and high-frequency motors
             gamepad.SetMotorSpeeds(lowFrequency, highFrequency);

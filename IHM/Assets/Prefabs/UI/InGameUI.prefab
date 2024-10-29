@@ -359,6 +359,8 @@ MonoBehaviour:
   settingsButton: {fileID: 7161012269150288584}
   settingsPanel: {fileID: 1879548557361837124}
   pauseMenuUI: {fileID: 909797168179334851}
+  helpPanel: {fileID: 3481901271201109937}
+  helpIndicationPanel: {fileID: 4111054384977924843}
   settingsReturnButton: {fileID: 2112867087599870504}
 --- !u!1 &3481901271201109937
 GameObject:
@@ -372,12 +374,12 @@ GameObject:
   - component: {fileID: 8616254336436835639}
   - component: {fileID: 4986498215708256839}
   m_Layer: 5
-  m_Name: HelpMenu
+  m_Name: HelpText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7562835680493500805
 RectTransform:
   m_ObjectHideFlags: 0
@@ -395,8 +397,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 650, y: -690}
-  m_SizeDelta: {x: 1200, y: 1080}
+  m_AnchoredPosition: {x: 650, y: -480}
+  m_SizeDelta: {x: 1200, y: 720}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8616254336436835639
 CanvasRenderer:
@@ -419,7 +421,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -447,6 +449,7 @@ GameObject:
   - component: {fileID: 1346939875798621234}
   - component: {fileID: 7829281262703069734}
   - component: {fileID: 2771124939517567747}
+  - component: {fileID: 8035438193991862491}
   m_Layer: 5
   m_Name: HelpIndication
   m_TagString: Untagged
@@ -495,7 +498,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -512,6 +515,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8035438193991862491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4111054384977924843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bf0006b2e42d054181ff5489dbb4ab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  helpPanel: {fileID: 3481901271201109937}
 --- !u!1 &5456565236482030657
 GameObject:
   m_ObjectHideFlags: 0
@@ -547,7 +563,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1200, y: 1080}
+  m_SizeDelta: {x: 1200, y: 720}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2010925550182345386
 CanvasRenderer:
@@ -578,8 +594,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "Move \t<sprite=3> / <sprite=9> / <sprite=15>\nJump \t<sprite=5> / <sprite=7>\nClimb
-    <sprite=1> / <sprite=18>\nDash \t<sprite=4> / <sprite=8>\nSprint <sprite=3>(double
-    tap) / <sprite=14>\nPause Game <sprite=2> / <sprite=24> "
+    (H) <sprite=1> / <sprite=18> \nDash \t<sprite=4> / <sprite=8>\nSprint (H) <sprite=3>(double
+    tap) / <sprite=14>\nPause Game <sprite=2> / <sprite=24> \n\n(H) = Hold Down"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -740,10 +756,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SettingsPanel
       objectReference: {fileID: 0}
-    - target: {fileID: 3059717012921260478, guid: b447d0b171f0ab8479156a6eb5f9efee, type: 3}
-      propertyPath: togglePlayerTrailAnimationActivated
-      value: 
-      objectReference: {fileID: 9023528813256187716}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -768,17 +780,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &9023528813256187716 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8981173079996277624, guid: b447d0b171f0ab8479156a6eb5f9efee, type: 3}
-  m_PrefabInstance: {fileID: 115276034875178044}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &3911598534789066634

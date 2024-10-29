@@ -7,4 +7,6 @@ public static class FeedbackAnimationParameters
     public static bool playerJumpAnimationActivated = true;
     public static bool playerClimbAnimationActivated = true;
     public static bool playerTrailAnimationActivated = true;
+    public static bool crumblingPlatformShakeAnimation = true;
+    public static bool crumblingPlatformControllerShakeAnimation = true;
 }
