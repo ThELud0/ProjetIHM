@@ -59,7 +59,7 @@ public class DestructiblePlatform : MonoBehaviour
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
-        StopVibration();
+        Invoke("StopVibration", 0.2f);
         onPlatform = false;
     }
 
@@ -67,7 +67,7 @@ public class DestructiblePlatform : MonoBehaviour
     {
         if (onPlatform)
         {
-            StopVibration();
+            Invoke("StopVibration",0.3f);
             onPlatform = false;
         }
         SoundFXManager.instance.PlaySoundFXClip(breakingSoundClip, transform, 1f);

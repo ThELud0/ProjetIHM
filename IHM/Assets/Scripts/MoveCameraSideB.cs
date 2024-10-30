@@ -33,7 +33,7 @@ public class MoveCameraSideB : MonoBehaviour
                 Camera.main.transform.position = currentTarget.position;
                 isMoving = false;
             }
-            UnityEngine.Debug.Log(isMoving);
+
         }
     }
 }

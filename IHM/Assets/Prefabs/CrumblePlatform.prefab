@@ -147,7 +147,7 @@ MonoBehaviour:
   repairTime: 1.5
   breakingSoundClip: {fileID: 8300000, guid: 7e26c9daf4c32483b9c2790e662d3f1b, type: 3}
   crumblingSoundClip: {fileID: 8300000, guid: 079df0609381f5b4c85e2041ab773adf, type: 3}
-  lowFrequency: 0.25
-  highFrequency: 0.25
+  lowFrequency: 0.1
+  highFrequency: 0.8
   yMaxShakingOffset: 0.05
   xMaxShakingOffset: 0.15
