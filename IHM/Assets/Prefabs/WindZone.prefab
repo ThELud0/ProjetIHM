@@ -275,6 +275,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   floatingGravityScale: -1.5
   originalGravityScale: 0
+  windSoundClip: {fileID: 0}
+  clipLoopTimer: 0.5
 --- !u!1 &7453909212202404946
 GameObject:
   m_ObjectHideFlags: 0
@@ -288,7 +290,7 @@ GameObject:
   - component: {fileID: 5301781272147146988}
   m_Layer: 0
   m_Name: WindZone
-  m_TagString: Untagged
+  m_TagString: WindZone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -369,3 +371,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   floatingGravityScale: -1.5
   originalGravityScale: 0
+  windSoundClip: {fileID: 8300000, guid: f648c0d0c7a6f794abcb6bc678a4a92f, type: 3}
+  clipLoopTimer: 0.8

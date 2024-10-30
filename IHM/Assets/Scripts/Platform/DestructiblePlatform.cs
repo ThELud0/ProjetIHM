@@ -6,6 +6,7 @@ public class DestructiblePlatform : MonoBehaviour
     public float destructionTime = 1f;
     public float repairTime = 1.5f;
     public AudioClip breakingSoundClip;
+    public AudioClip crumblingSoundClip;
     private GameObject platformPrefab;
 
     public float lowFrequency ;        // Intensity for low-frequency motor (0 to 1)
@@ -44,6 +45,7 @@ public class DestructiblePlatform : MonoBehaviour
     {
         if ((collision.gameObject.CompareTag("Player"))&&!crumbling)
         {
+            SoundFXManager.instance.PlaySoundFXClipSpecificLength(crumblingSoundClip, transform, 1f, destructionTime);
             Invoke("DestroyPlatform", destructionTime);
         }
         crumbling = true;
