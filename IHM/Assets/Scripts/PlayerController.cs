@@ -27,6 +27,9 @@ public class PlayerController : MonoBehaviour
     public float jumpAnimationTime;
     public float jumpAnimationSize;
 
+    public AudioClip jumpSoundClip;
+    public AudioClip dashSoundClip;
+
     
 
     private Gamepad manette;
@@ -188,6 +191,7 @@ public class PlayerController : MonoBehaviour
         //#TODO_N get how we deal with gamepad/keyboard
         if ( ((manette != null && manette.buttonEast.wasPressedThisFrame) || Input.GetKeyDown(KeyCode.LeftShift) ) && !IsDashing && (moveX != 0 || moveY != 0) && !hasDashed)
         {
+            SoundFXManager.instance.PlaySoundFXClip(dashSoundClip, transform, 1f);
             IsDashing = true;
             CurrentDashTimer = DashTime;
             player.velocity = Vector2.zero;
@@ -209,6 +213,7 @@ public class PlayerController : MonoBehaviour
     private void Dash()
     {
         hasDashed = true;
+        
         player.velocity = DashDirection * dashSpeed;
 
         CurrentDashTimer -= Time.deltaTime;
@@ -269,6 +274,7 @@ public class PlayerController : MonoBehaviour
     private void PlayerJumpUp()
     {
         PlayerJumpAnimation();
+        SoundFXManager.instance.PlaySoundFXClip(jumpSoundClip, transform, 1f);
         player.velocity = new Vector2(player.velocity.x, jumpSpeed);
         jumpCounter--;
         jumpTimestamp = Time.time;
