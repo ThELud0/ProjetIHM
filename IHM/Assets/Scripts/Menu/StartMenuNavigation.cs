@@ -14,7 +14,7 @@ public class StartMenuNavigation : MonoBehaviour
     public Button settingsReturnButton;
 
     private GameObject previousSelectedButton;
-    private Button selectedButton;
+
     private bool isSettingsOpen; // Flag to track if settings are open
 
     private void Start()

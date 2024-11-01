@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -29,6 +30,7 @@ public class PlayerController : MonoBehaviour
 
     public AudioClip jumpSoundClip;
     public AudioClip dashSoundClip;
+    public AudioClip damagedSoundClip;
 
     public int maxHealth;
     public float invincibilityDuration;
@@ -636,11 +638,12 @@ public class PlayerController : MonoBehaviour
             return;
 
         invincibilityStartTime = Time.time;
+        SoundFXManager.instance.PlaySoundFXClip(damagedSoundClip, transform, 1f);
 
         if (FeedbackAnimationParameters.health - damage <= 0 )
         {
             FeedbackAnimationParameters.health = 0;
-
+            Invoke("LoadDeathMenu", 0.5f);
         }
         else
         {
@@ -650,6 +653,11 @@ public class PlayerController : MonoBehaviour
         }
 
 
+    }
+
+    private void LoadDeathMenu()
+    {
+        SceneManager.LoadScene("DeathMenu");
     }
 
 
@@ -665,7 +673,8 @@ public class PlayerController : MonoBehaviour
     {   
         ResetPlayerState();
         TakeDamage(1);
-        Invoke("InitializePlayerAtCheckPointAfterDeath",0.05f);
+        if (FeedbackAnimationParameters.health > 0)
+            Invoke("InitializePlayerAtCheckPointAfterDeath",0.05f);
     }
 
 

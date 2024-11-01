@@ -204,10 +204,11 @@ MonoBehaviour:
   jumpAnimationSize: 0.85
   jumpSoundClip: {fileID: 8300000, guid: 29bde6326b4c34ad8a12da475f79b50a, type: 3}
   dashSoundClip: {fileID: 8300000, guid: d46323e22e74e46baa241cbf48c85671, type: 3}
+  damagedSoundClip: {fileID: 8300000, guid: dc6614beca09347ec9b258f12d154bdd, type: 3}
   maxHealth: 3
-  invincibilityDuration: 1
-  flickerOnDamageTime: 1
-  flickerOnDamageSpeed: 4
+  invincibilityDuration: 1.5
+  flickerOnDamageTime: 1.5
+  flickerOnDamageSpeed: 16
   DashTime: 0.25
   dashSpeed: 50
   collisionLayer:
