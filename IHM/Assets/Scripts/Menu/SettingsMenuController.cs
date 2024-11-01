@@ -10,6 +10,7 @@ public class SettingsMenuController : MonoBehaviour
     public Toggle togglePlayerTrailAnimationActivated;
     public Toggle toggleCrumblingPlatformShakeAnimation;
     public Toggle toggleCrumblingPlatformControllerShakeAnimation;
+    public Toggle toggleFlickeringAnimation;
 
     void Start()
     {
@@ -19,12 +20,14 @@ public class SettingsMenuController : MonoBehaviour
         togglePlayerTrailAnimationActivated.isOn = FeedbackAnimationParameters.playerTrailAnimationActivated;
         toggleCrumblingPlatformShakeAnimation.isOn = FeedbackAnimationParameters.crumblingPlatformShakeAnimation;
         toggleCrumblingPlatformControllerShakeAnimation.isOn = FeedbackAnimationParameters.crumblingPlatformControllerShakeAnimation;
+        toggleFlickeringAnimation.isOn = FeedbackAnimationParameters.flickeringAnimation;
         // Add listeners to update the static booleans when the toggle changes
         togglePlayerJumpAnimationActivated.onValueChanged.AddListener(SetPlayerJumpAnimationActivated);
         togglePlayerClimbAnimationActivated.onValueChanged.AddListener(SetPlayerClimbAnimationActivated);
         togglePlayerTrailAnimationActivated.onValueChanged.AddListener(SetPlayerTrailAnimationActivated);
         toggleCrumblingPlatformShakeAnimation.onValueChanged.AddListener(SetCrumblingPlatformShakeAnimation);
         toggleCrumblingPlatformControllerShakeAnimation.onValueChanged.AddListener(SetCrumblingPlatformControllerShakeAnimation);
+        toggleFlickeringAnimation.onValueChanged.AddListener(SetFlickeringAnimation);
     }
 
     void SetPlayerJumpAnimationActivated(bool isOn)
@@ -50,5 +53,10 @@ public class SettingsMenuController : MonoBehaviour
     void SetCrumblingPlatformControllerShakeAnimation(bool isOn)
     {
         FeedbackAnimationParameters.crumblingPlatformControllerShakeAnimation = isOn;
+    }
+
+    void SetFlickeringAnimation(bool isOn)
+    {
+        FeedbackAnimationParameters.flickeringAnimation = isOn;
     }
 }

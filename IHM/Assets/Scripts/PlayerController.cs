@@ -617,11 +617,13 @@ public class PlayerController : MonoBehaviour
 
     private void StartFlickering()
     {
-        flickering = true;
+        if (FeedbackAnimationParameters.flickeringAnimation)
+            flickering = true;
     }
 
     private void StopFlickering()
     {
+
         flickering = false;
         defaultColor.a = 1f;
         playerSprite.color = defaultColor;
