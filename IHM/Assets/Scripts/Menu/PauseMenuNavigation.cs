@@ -15,6 +15,7 @@ public class PauseMenuNavigation : MonoBehaviour
     public GameObject pauseMenuUI;
     public GameObject helpPanel;
     public GameObject helpIndicationPanel;
+    public GameObject healthBar;
     public Button settingsReturnButton;
 
     private GameObject previousSelectedButton;
@@ -91,6 +92,7 @@ public class PauseMenuNavigation : MonoBehaviour
             helpIndicationPanel.SetActive(false);
             helpPanelPreviousState = helpPanel.activeSelf;
             helpPanel.SetActive(false);
+            healthBar.SetActive(false);
             // Store the currently selected button in the main menu
             previousSelectedButton = EventSystem.current.currentSelectedGameObject;
 
@@ -125,6 +127,7 @@ public class PauseMenuNavigation : MonoBehaviour
 
             SetPauseMenuUIState(true);
             helpIndicationPanel.SetActive(true);
+            healthBar.SetActive(true);
             helpPanel.SetActive(helpPanelPreviousState);
             EventSystem.current.SetSelectedGameObject(previousSelectedButton);
 

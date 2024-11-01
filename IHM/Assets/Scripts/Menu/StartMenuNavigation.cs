@@ -19,6 +19,7 @@ public class StartMenuNavigation : MonoBehaviour
 
     private void Start()
     {
+        FeedbackAnimationParameters.health = 0;
         // Automatically select the Start button when the menu loads
         EventSystem.current.SetSelectedGameObject(startButton.gameObject);
 

@@ -13,4 +13,6 @@ public static class FeedbackAnimationParameters
     public static float mainVolume = 0.8f;
     public static float musicVolume = 0.3f;
     public static float soundFXVolume = 0.8f;
+
+    public static int health;
 }

@@ -30,6 +30,8 @@ public class PlayerController : MonoBehaviour
     public AudioClip jumpSoundClip;
     public AudioClip dashSoundClip;
 
+    public int maxHealth;
+    public float invincibilityDuration;
     
 
     private Gamepad manette;
@@ -71,6 +73,12 @@ public class PlayerController : MonoBehaviour
     private Vector3 respawnPoint;
     private Vector3 initialScale;
     private Vector3 currentScale;
+    private Color defaultColor;
+    private float invincibilityStartTime = 0f;
+    private float flickerTimeStamp = 0f;
+    private bool flickering = false;
+    public float flickerOnDamageTime;
+    public float flickerOnDamageSpeed;
 
 
     private float CurrentDashTimer;
@@ -102,6 +110,12 @@ public class PlayerController : MonoBehaviour
         trail = GetComponent<TrailRenderer>();
         trail.emitting = false;
         trailLocked = false;
+        ChangeColor(Color.white);
+
+        if (FeedbackAnimationParameters.health <= 0)
+        {
+            FeedbackAnimationParameters.health = maxHealth;
+        }
     }
 
     /* -------------------------------------------------- END OF START METHOD -------------------------------------------------- */
@@ -202,6 +216,9 @@ public class PlayerController : MonoBehaviour
 
         if (IsDashing)
             Dash();
+
+        if (flickering)
+            Flicker();
     }
 
     /* -------------------------------------------------- END OF UPDATE METHOD -------------------------------------------------- */
@@ -472,13 +489,12 @@ public class PlayerController : MonoBehaviour
             {
                 ChangeColor(Color.green);
             }
-            else
+            else if (!flickering)
             {
                 ChangeColor(Color.white);
             }
         }
-        else
-            ChangeColor(Color.white);
+            
     }
 
     private void PlayerJumpAnimation()
@@ -523,7 +539,7 @@ public class PlayerController : MonoBehaviour
             isTouchingWall = false;
     }
 
-    private void InitializePlayerAtCheckPoint()
+    private void InitializePlayerAtCheckPointAfterDeath()
     {
         transform.position = respawnPoint;
         trail.time = 0.23f;
@@ -544,6 +560,7 @@ public class PlayerController : MonoBehaviour
         TrailTemporaryLock();
         trail.time = 0.01f;
         trail.emitting = false;
+        ChangeColor(Color.white);
     }
 
     private void DecreaseSize()
@@ -578,6 +595,61 @@ public class PlayerController : MonoBehaviour
         trailLocked = false;
     }
 
+    private void Flicker()
+    {
+        defaultColor = playerSprite.color;
+
+        if (Time.time - flickerTimeStamp >= 1f / flickerOnDamageSpeed)
+        {
+            Debug.Log(defaultColor.a);
+
+
+            flickerTimeStamp = Time.time;
+
+            defaultColor.a = defaultColor.a == 0f ? 1f : 0f;
+
+            Debug.Log(defaultColor.a);
+
+            playerSprite.color = defaultColor;
+        }
+        
+    }
+
+    private void StartFlickering()
+    {
+        flickering = true;
+    }
+
+    private void StopFlickering()
+    {
+        flickering = false;
+        defaultColor.a = 1f;
+        playerSprite.color = defaultColor;
+    }
+
+    private void TakeDamage(int damage)
+    {
+
+        if (Time.time - invincibilityStartTime < invincibilityDuration)
+            return;
+
+        invincibilityStartTime = Time.time;
+
+        if (FeedbackAnimationParameters.health - damage <= 0 )
+        {
+            FeedbackAnimationParameters.health = 0;
+
+        }
+        else
+        {
+            FeedbackAnimationParameters.health -= damage;
+            StartFlickering();
+            Invoke("StopFlickering",flickerOnDamageTime);
+        }
+
+
+    }
+
 
     /* -------------------------------------------------- END OF MISCELLEANOUS METHODS -------------------------------------------------- */
 
@@ -590,7 +662,8 @@ public class PlayerController : MonoBehaviour
     void OnBecameInvisible()
     {   
         ResetPlayerState();
-        Invoke("InitializePlayerAtCheckPoint",0.05f);
+        TakeDamage(1);
+        Invoke("InitializePlayerAtCheckPointAfterDeath",0.05f);
     }
 
 
