@@ -91,6 +91,7 @@ public class PlayerController : MonoBehaviour
     public LayerMask collisionLayer;
     private bool hasDashed = false;
     TrailRenderer trail;
+    public Transform departCamera;
 
     /* -------------------------------------------------- BEGINNING OF START METHOD -------------------------------------------------- */
     void Start()
@@ -544,6 +545,7 @@ public class PlayerController : MonoBehaviour
 
     private void InitializePlayerAtCheckPointAfterDeath()
     {
+        Camera.main.transform.position = departCamera.position;
         transform.position = respawnPoint;
         trail.time = 0.23f;
     }
