@@ -159,7 +159,6 @@ public class PlayerController : MonoBehaviour
         {
             if (!wallJumpRefreshed)
             {
-                Debug.Log("wallJumpRefreshed");
                 jumpCounter = maxJumpAmount;
                 wallJumpRefreshed = true;
             } 
@@ -172,6 +171,13 @@ public class PlayerController : MonoBehaviour
         // check if player is near climbable surface
         if (CheckAndReturnIfPlayerCanClimb())
         {
+            if (!jumpRefreshed)
+            {
+                Debug.Log("here");
+                jumpCounter = maxJumpAmount;
+                Debug.Log(jumpCounter);
+                jumpRefreshed = true;
+            }
             //check if player gives climbing input and set isClimbing bool accordingly
             CheckClimbInputAndSet();
             if (isClimbing  && (Time.time > jumpTimestamp + tempStopClimbCheckTimer))
@@ -186,9 +192,11 @@ public class PlayerController : MonoBehaviour
                 // apply move speed to player velocity
                 player.velocity = new Vector2(player.velocity.x, verticalMove);
             }
+            
         }
         else
         {
+            jumpRefreshed = false;
             NotClimbingOrStopped(); //player cannot be climbing if not near climbable surface
         }
         ClimbAnimation();
@@ -258,7 +266,7 @@ public class PlayerController : MonoBehaviour
 
     private void CheckAndExecuteJump()
     {
-        if (isGrounded || isClimbing || isTouchingWall)
+        if (isGrounded || CheckAndReturnIfPlayerCanClimb() || isTouchingWall)
         {
             canStillJumpTimestamp = Time.time;
         }
@@ -437,10 +445,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void NotClimbingOrStopped()
     {
-
         isClimbing = false;
-        jumpRefreshed = false;
-
     }
 
     /// <summary>
@@ -448,11 +453,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void StartClimbing()
     {
-        if (!jumpRefreshed)
-        {
-            jumpCounter = maxJumpAmount;
-            jumpRefreshed = true;
-        }
+
         sprinting = false;
         isClimbing = true;
         
