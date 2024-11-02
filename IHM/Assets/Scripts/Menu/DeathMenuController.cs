@@ -31,7 +31,7 @@ public class DeathMenuController : MonoBehaviour
     // Method to load the Level 1 scene
     public void LoadLevel()
     {
-        SceneManager.LoadScene("level_1");
+        SceneManager.LoadScene("Lvl1");
     }
 
     public void ReturnToStartMenu()

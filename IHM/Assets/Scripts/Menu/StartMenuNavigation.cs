@@ -37,7 +37,7 @@ public class StartMenuNavigation : MonoBehaviour
     // Method to load the Level 1 scene
     public void LoadLevel()
     {
-        SceneManager.LoadScene("level_1");
+        SceneManager.LoadScene("Lvl1");
     }
 
     // Method to load the Settings panel
