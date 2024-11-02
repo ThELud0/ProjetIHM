@@ -18,6 +18,7 @@ public class Collectible2D : MonoBehaviour
         
         if (other.GetComponent<PlayerController>() != null) 
         {
+            CoinCount.count++;
             Destroy(gameObject);
             Instantiate(onCollectEffect, transform.position, transform.rotation);
         }

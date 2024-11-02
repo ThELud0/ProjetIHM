@@ -88,7 +88,7 @@ public class PlayerController : MonoBehaviour
     private bool IsDashing = false;
     private Vector2 DashDirection;
     public float dashSpeed = 30f;
-    public LayerMask collisionLayer;//#TODO_N there is still problems with collision I should deal with, maybe in the matrix ?
+    public LayerMask collisionLayer;
     private bool hasDashed = false;
     TrailRenderer trail;
 
@@ -212,7 +212,7 @@ public class PlayerController : MonoBehaviour
             moveX = direction.x;
             moveY = direction.y;
         }
-        //#TODO_N get how we deal with gamepad/keyboard
+
         if ( ((manette != null && manette.buttonEast.wasPressedThisFrame) || Input.GetKeyDown(KeyCode.LeftShift) ) && !IsDashing && (moveX != 0 || moveY != 0) && !hasDashed)
         {
             SoundFXManager.instance.PlaySoundFXClip(dashSoundClip, transform, 1f);
