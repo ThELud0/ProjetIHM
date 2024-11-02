@@ -654,7 +654,11 @@ public class PlayerController : MonoBehaviour
             Invoke("StopFlickering",flickerOnDamageTime);
         }
 
+    }
 
+    private void TakeOneDamage()
+    {
+        TakeDamage(1);
     }
 
     private void LoadDeathMenu()
@@ -674,7 +678,8 @@ public class PlayerController : MonoBehaviour
     void OnBecameInvisible()
     {   
         ResetPlayerState();
-        TakeDamage(1);
+
+        Invoke("TakeOneDamage", 0.05f);
         if (FeedbackAnimationParameters.health > 0)
             Invoke("InitializePlayerAtCheckPointAfterDeath",0.05f);
     }

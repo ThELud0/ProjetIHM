@@ -177,7 +177,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 10
-  jumpSpeed: 20
+  jumpSpeed: 25
   climbSpeed: 5
   playerLowerLeftCornerCheck: {fileID: 2831524339477671235}
   playerLowerRightCornerCheck: {fileID: 8564815065838924801}
