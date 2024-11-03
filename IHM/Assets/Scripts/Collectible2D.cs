@@ -7,6 +7,7 @@ public class Collectible2D : MonoBehaviour
 
     public float rotationSpeed = 0.5f;
     public GameObject onCollectEffect;
+    public AudioClip coinSoundClip;
 
     void Update()
     {
@@ -18,6 +19,7 @@ public class Collectible2D : MonoBehaviour
         
         if (other.GetComponent<PlayerController>() != null) 
         {
+            SoundFXManager.instance.PlaySoundFXClip(coinSoundClip, transform, 1f);
             CoinCount.count++;
             Destroy(gameObject);
             Instantiate(onCollectEffect, transform.position, transform.rotation);

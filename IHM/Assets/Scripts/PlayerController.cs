@@ -647,7 +647,7 @@ public class PlayerController : MonoBehaviour
         if (FeedbackAnimationParameters.health - damage <= 0 )
         {
             FeedbackAnimationParameters.health = 0;
-            Invoke("LoadDeathMenu", 0.5f);
+            Invoke("LoadDeathMenu", 0.3f);
         }
         else
         {
@@ -682,8 +682,8 @@ public class PlayerController : MonoBehaviour
         ResetPlayerState();
 
         Invoke("TakeOneDamage", 0.05f);
-        if (FeedbackAnimationParameters.health > 0)
-            Invoke("InitializePlayerAtCheckPointAfterDeath",0.05f);
+        if (FeedbackAnimationParameters.health > 1)
+            Invoke("InitializePlayerAtCheckPointAfterDeath",0.15f);
     }
 
 
