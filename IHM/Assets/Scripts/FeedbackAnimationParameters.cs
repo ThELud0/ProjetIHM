@@ -16,4 +16,6 @@ public static class FeedbackAnimationParameters
     public static float soundFXVolume = 0.8f;
 
     public static int health;
+
+    public static bool sceneTransition = false;
 }

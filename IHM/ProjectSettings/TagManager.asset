@@ -56,3 +56,9 @@ TagManager:
   - name: Player
     uniqueID: 715068447
     locked: 0
+  - name: UI
+    uniqueID: 507387935
+    locked: 0
+  - name: SceneAnimation
+    uniqueID: 1628866995
+    locked: 0
