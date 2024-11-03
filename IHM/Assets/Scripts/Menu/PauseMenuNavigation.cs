@@ -50,11 +50,11 @@ public class PauseMenuNavigation : MonoBehaviour
         // Check if the player presses the Pause key (Escape or Start on a controller)
         if (Input.GetKeyDown(KeyCode.Escape) || ((Gamepad.current != null) && Gamepad.current.startButton.wasPressedThisFrame))
         {
-            if (isPaused)
+            if (isPaused && !isSettingsOpen)
             {
                 Resume();
             }
-            else
+            else if (!isSettingsOpen)
             {
                 Pause();
             }
@@ -146,6 +146,7 @@ public class PauseMenuNavigation : MonoBehaviour
 
     private void SetSettingsStateFalse()
     {
+        isSettingsOpen = false;
         settingsPanel.SetActive(false);
     }
 
