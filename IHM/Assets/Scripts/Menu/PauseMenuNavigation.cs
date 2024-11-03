@@ -38,6 +38,7 @@ public class PauseMenuNavigation : MonoBehaviour
         homeButton.onClick.AddListener(ReturnToStartMenu);
         settingsPanel.SetActive(true);
         Invoke("SetSettingsStateFalse", 0.005f); //open settings real quick to get the volume values from sliders to mixer
+        helpIndicationPanel.SetActive(true);
         pauseMenuUI.SetActive(false);
         isSettingsOpen = false;
         isPaused = false;

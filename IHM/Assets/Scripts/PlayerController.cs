@@ -692,6 +692,7 @@ public class PlayerController : MonoBehaviour
         if (collision.tag == "CheckPoint")
         {
             respawnPoint = transform.position;
+            departCamera.position = Camera.main.transform.position;
         }
     }
 

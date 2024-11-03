@@ -14,7 +14,7 @@ public class VictoryFlagManager : MonoBehaviour
         if (other.GetComponent<PlayerController>() != null)
         {
             SoundFXManager.instance.PlaySoundFXClip(flagSoundClip, transform, 1f);
-            Invoke("LoadVictoryMenu", 0.5f);
+            Invoke("LoadVictoryMenu", 2f);
 
         }
     }

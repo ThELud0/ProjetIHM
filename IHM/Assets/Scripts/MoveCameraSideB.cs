@@ -5,7 +5,7 @@ public class MoveCameraSideB : MonoBehaviour
 {
     public Transform targetCameraPos;
     public Transform previousCameraPos;
-    public float cameraMoveSpeed = 2f;
+    public float cameraMoveSpeed = 4f;
 
     private Transform currentTarget;
     private bool isMoving = false;
