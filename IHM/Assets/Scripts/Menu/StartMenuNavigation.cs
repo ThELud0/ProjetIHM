@@ -37,6 +37,12 @@ public class StartMenuNavigation : MonoBehaviour
     // Method to load the Level 1 scene
     public void LoadLevel()
     {
+        FeedbackAnimationParameters.sceneTransition = true;
+        Invoke("LoadLevel1", 1f);
+    }
+
+    public void LoadLevel1()
+    {
         SceneManager.LoadScene("Lvl1");
     }
 

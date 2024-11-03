@@ -82,6 +82,13 @@ public class PauseMenuNavigation : MonoBehaviour
     // Method to load the Level 1 scene
     public void ReturnToStartMenu()
     {
+        StartTransitionAnimation();
+        Resume();
+        Invoke("LoadStartMenu", 1f);
+    }
+
+    public void LoadStartMenu()
+    {
         SceneManager.LoadScene("StartMenu");
     }
 
@@ -116,6 +123,11 @@ public class PauseMenuNavigation : MonoBehaviour
     {
         Debug.Log("Quit Game"); // This will log in the console when quitting
         Application.Quit(); // Quit the application
+    }
+
+    private void StartTransitionAnimation()
+    {
+        FeedbackAnimationParameters.sceneTransition = true;
     }
 
     public void CloseSettings()

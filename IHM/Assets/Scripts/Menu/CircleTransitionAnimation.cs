@@ -6,10 +6,14 @@ public class CircleTransitionAnimation : MonoBehaviour
 {
 
     private Animator circleAnimation;
+    private SpriteRenderer sprite;
 
     // Start is called before the first frame update
     void Start()
     {
+        FeedbackAnimationParameters.sceneTransition = false;
+        sprite = GetComponent<SpriteRenderer>();
+        sprite.enabled = true;
         circleAnimation = GetComponent<Animator>();
     }
 

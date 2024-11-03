@@ -14,9 +14,15 @@ public class VictoryFlagManager : MonoBehaviour
         if (other.GetComponent<PlayerController>() != null)
         {
             SoundFXManager.instance.PlaySoundFXClip(flagSoundClip, transform, 1f);
+            Invoke("StartTransitionAnimation", 0.5f);
             Invoke("LoadVictoryMenu", 2f);
 
         }
+    }
+
+    private void StartTransitionAnimation()
+    {
+        FeedbackAnimationParameters.sceneTransition = true;
     }
 
     private void LoadVictoryMenu()

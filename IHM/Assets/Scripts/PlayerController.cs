@@ -115,6 +115,8 @@ public class PlayerController : MonoBehaviour
         trailLocked = false;
         ChangeColor(Color.white);
 
+
+
         if (FeedbackAnimationParameters.health <= 0)
         {
             FeedbackAnimationParameters.health = maxHealth;
@@ -647,7 +649,8 @@ public class PlayerController : MonoBehaviour
         if (FeedbackAnimationParameters.health - damage <= 0 )
         {
             FeedbackAnimationParameters.health = 0;
-            Invoke("LoadDeathMenu", 0.3f);
+            FeedbackAnimationParameters.sceneTransition = true;
+            Invoke("LoadDeathMenu", 1.3f);
         }
         else
         {
