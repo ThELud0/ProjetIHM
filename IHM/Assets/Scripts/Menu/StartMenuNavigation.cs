@@ -28,8 +28,10 @@ public class StartMenuNavigation : MonoBehaviour
         settingsButton.onClick.AddListener(LoadSettings);
         settingsReturnButton.onClick.AddListener(CloseSettings);
 
-        settingsPanel.SetActive(false);
-        isSettingsOpen = false;
+        settingsPanel.SetActive(true);
+        Invoke("SetSettingsStateFalse", 0.005f); //open settings real quick to get the volume values from sliders to mixer
+
+
     }
 
 
@@ -102,6 +104,13 @@ public class StartMenuNavigation : MonoBehaviour
         startButton.gameObject.SetActive(state);
         settingsButton.gameObject.SetActive(state);
         quitButton.gameObject.SetActive(state);
+    }
+
+    private void SetSettingsStateFalse()
+    {
+        isSettingsOpen = false;
+        settingsPanel.SetActive(false);
+
     }
 
 }

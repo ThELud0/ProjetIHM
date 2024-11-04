@@ -572,9 +572,9 @@ public class PlayerController : MonoBehaviour
 
     private void DecreaseSize()
     {
-        wallCheckRadius += 0.1f;
+        wallCheckRadius += 0.25f;
         groundCheckRadius += 0.1f;
-        climbCheckRadius += 0.1f;
+        climbCheckRadius += 0.22f;
         transform.localScale = new Vector3(currentScale.x * jumpAnimationSize, currentScale.y * jumpAnimationSize, currentScale.z * jumpAnimationSize);
         
     }
@@ -582,9 +582,9 @@ public class PlayerController : MonoBehaviour
     private void RestoreSize()
     {
         transform.localScale = currentScale;
-        wallCheckRadius -= 0.1f;
+        wallCheckRadius -= 0.25f;
         groundCheckRadius -= 0.1f;
-        climbCheckRadius -= 0.1f;
+        climbCheckRadius -= 0.22f;
     }
 
     private void ChangeColor(Color color)
