@@ -39,8 +39,8 @@ public class PlayerController : MonoBehaviour
     private Gamepad manette;
 
     //Keyboard binds
-    private KeyCode shiftKeyboardInput = KeyCode.LeftControl;
-    private KeyCode shiftAltKeyboardInput = KeyCode.RightControl;
+    private KeyCode climbKeyboardInput = KeyCode.LeftControl;
+    private KeyCode climbAltKeyboardInput = KeyCode.RightControl;
     private KeyCode leftSprintKeyboardInput = KeyCode.A; //Unity se base sur des claviers QWERTY...
     private KeyCode rightSprintKeyboardInput = KeyCode.D;
 
@@ -420,11 +420,11 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void CheckClimbInputAndSet()
     {
-        if ((Input.GetKeyUp(shiftKeyboardInput)) || (Input.GetKeyUp(shiftAltKeyboardInput)) )
+        if ((Input.GetKeyUp(climbKeyboardInput)) || (Input.GetKeyUp(climbAltKeyboardInput)) )
         {
             NotClimbingOrStopped();
         }
-        if ((Input.GetKey(shiftKeyboardInput)) || (Input.GetKey(shiftAltKeyboardInput)))
+        if ((Input.GetKey(climbKeyboardInput)) || (Input.GetKey(climbAltKeyboardInput)))
         {
             StartClimbing();
         }
