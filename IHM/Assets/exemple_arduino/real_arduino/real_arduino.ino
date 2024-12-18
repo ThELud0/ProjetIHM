@@ -53,6 +53,7 @@ void loop() {
 
 void sendMovementMessage() {
   int X, Y;
+  uint8_t payloadX, payloadY;
   X = analogRead(axeX);
   Y = analogRead(axeY);
   Serial.print("Axe X:");
@@ -61,16 +62,36 @@ void sendMovementMessage() {
   Serial.print("Axe Y:");
   Serial.print(Y);
   Serial.println("");
+
+  outputValueX = map(X, 0, 1023, 0, 255);
+  outputValueY = map(Y, 0, 1023, 0, 255);
+  payloadX = outputValueX;
+  payloadY = outputValueY;
+  
+  /*
   outputValueX = map(X, 0, 1023, 0, 255) - 126;
   outputValueY = map(Y, 0, 1023, 0, 255) - 124;
-  Serial.print("Axe mapped X:");
-  Serial.print(outputValueX);
+
+  payloadX = outputValueX;
+  if (outputValueX > 120)
+    payloadX = 130;
+  else if (outputValueX < -120)
+    payloadX = -130;
+
+  payloadY = -outputValueY;
+  if (outputValueY > 120)
+    payloadY = 130;
+  else if (outputValueY < -120)
+    payloadY = -130;
+
+  Serial.print("Payload X:");
+  Serial.print(payloadX);
   Serial.print(", ");
-  Serial.print("Axe mapped Y:");
-  Serial.print(outputValueY);
+  Serial.print("Payload Y:");
+  Serial.print(payloadY);
   Serial.println("");
-  uint8_t payloadX = outputValueX;  // Payload is a single byte
-  uint8_t payloadY = outputValueY;
+*/
+
   sendMessage(movementMessageXType, 1, &payloadX);
   sendMessage(movementMessageYType, 1, &payloadY);
 }
@@ -90,5 +111,4 @@ void sendMessage(char type, uint8_t length, uint8_t* data) {
       Serial.write(data, length);  // Write the payload if it exists
     }
   }
-
 }
