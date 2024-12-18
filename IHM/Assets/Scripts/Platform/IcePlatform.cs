@@ -30,9 +30,9 @@ public class IcePlatform : MonoBehaviour
             {
                 float moveInput = Input.GetAxis("Horizontal");
 
-                playerRigidbody.velocity = new Vector2(
-                    Mathf.Lerp(playerRigidbody.velocity.x, moveInput * playerRigidbody.velocity.magnitude, iceControlReduction),
-                    playerRigidbody.velocity.y
+                playerRigidbody.linearVelocity = new Vector2(
+                    Mathf.Lerp(playerRigidbody.linearVelocity.x, moveInput * playerRigidbody.linearVelocity.magnitude, iceControlReduction),
+                    playerRigidbody.linearVelocity.y
                 );
             }
         }

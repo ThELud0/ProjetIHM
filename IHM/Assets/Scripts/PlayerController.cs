@@ -193,7 +193,7 @@ public class PlayerController : MonoBehaviour
                     verticalMove = direction.y * climbSpeed;
                 }
                 // apply move speed to player velocity
-                player.velocity = new Vector2(player.velocity.x, verticalMove);
+                player.linearVelocity = new Vector2(player.linearVelocity.x, verticalMove);
             }
             
         }
@@ -221,7 +221,7 @@ public class PlayerController : MonoBehaviour
             SoundFXManager.instance.PlaySoundFXClip(dashSoundClip, transform, 1f);
             IsDashing = true;
             CurrentDashTimer = DashTime;
-            player.velocity = Vector2.zero;
+            player.linearVelocity = Vector2.zero;
 
             DashDirection = new Vector2(moveX, moveY).normalized;
             SetTrailEmissionState(true);
@@ -244,14 +244,14 @@ public class PlayerController : MonoBehaviour
     {
         hasDashed = true;
         
-        player.velocity = DashDirection * dashSpeed;
+        player.linearVelocity = DashDirection * dashSpeed;
 
         CurrentDashTimer -= Time.deltaTime;
 
         if (CurrentDashTimer <= 0)
         {
             IsDashing = false;
-            player.velocity = Vector2.zero;
+            player.linearVelocity = Vector2.zero;
 
             if (!sprinting)
                 SetTrailEmissionState(false);
@@ -305,7 +305,7 @@ public class PlayerController : MonoBehaviour
     {
         PlayerJumpAnimation();
         SoundFXManager.instance.PlaySoundFXClip(jumpSoundClip, transform, 1f);
-        player.velocity = new Vector2(player.velocity.x, jumpSpeed);
+        player.linearVelocity = new Vector2(player.linearVelocity.x, jumpSpeed);
         jumpCounter--;
         jumpTimestamp = Time.time;
     }
@@ -331,7 +331,7 @@ public class PlayerController : MonoBehaviour
         // check for sprinting input and modify move speed accordingly
         move = CheckAndApplyPlayerHorizontalSprint(move);
         // apply move speed to player velocity
-        player.velocity = new Vector2(move, player.velocity.y);
+        player.linearVelocity = new Vector2(move, player.linearVelocity.y);
     }
 
 
@@ -355,7 +355,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // Check for a double tap on Q key
-        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(leftSprintKeyboardInput)) //Unity adapté à clavier QWERTY... donc Q = A :')
+        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(leftSprintKeyboardInput)) //Unity adaptï¿½ ï¿½ clavier QWERTY... donc Q = A :')
         {
             if ((Time.time - leftLastTapTime <= doubleTapTimeThreshold) && isGrounded)
                 Sprint();
@@ -554,7 +554,7 @@ public class PlayerController : MonoBehaviour
 
     private void ResetPlayerState()
     {
-        player.velocity = new Vector2(0, 0);
+        player.linearVelocity = new Vector2(0, 0);
         jumpRefreshed = false;
         wallJumpRefreshed = false;
         IsDashing = false;
