@@ -1,13 +1,9 @@
 // The flag signals to the rest of the program an interrupt occured
 static bool button_flag = false;
-// Remember the state the river in the Unity program is in
-static bool river_state = true;
 
 int sensorValue = 0;  // value read from the pot
 int outputValue = 0;
 const int analogInPin = A0; 
-
-
 
 // Interrupt handler, sets the flag for later processing
 void buttonPress() {
@@ -38,18 +34,7 @@ void setup() {
 void loop() {
   // Slows reaction down a bit
   // but prevents _most_ button press misdetections
-  delay(300);
-  
-  if (button_flag) {
-    if (river_state) {
-      sendMessage('D', 0, nullptr);  // Send "dry" message
-    } else {
-      sendMessage('D', 0, nullptr);  // Send "wet" message
-    }
-    river_state = !river_state;
-    button_flag = false;
-  }
-
+  //delay(300);
   analogControl();
 }
 
@@ -73,7 +58,6 @@ void analogControl(){
 
   uint8_t payload = outputValue;  // Payload is a single byte
   sendMessage('S', 1, &payload);  // Type = 'S', Length = 1
-
 
   delay(20);
 }
