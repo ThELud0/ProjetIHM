@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.IO.Ports;
 using UnityEngine;
-
+/*
 public class SerialHandler : MonoBehaviour
 {
     
@@ -31,7 +31,7 @@ public class SerialHandler : MonoBehaviour
         _serial.Open();
     }
 
-    /*
+    
     // Update is called once per frame
     void Update()
     {
@@ -67,7 +67,7 @@ public class SerialHandler : MonoBehaviour
                 break;
         }
     }
-    */
+    
 
     private void Update()
     {
@@ -157,3 +157,4 @@ public class SerialHandler : MonoBehaviour
         _serial.Close();
     }
 }
+*/
