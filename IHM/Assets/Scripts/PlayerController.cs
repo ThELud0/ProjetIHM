@@ -176,9 +176,7 @@ public class PlayerController : MonoBehaviour
         {
             if (!jumpRefreshed)
             {
-                Debug.Log("here");
                 jumpCounter = maxJumpAmount;
-                Debug.Log(jumpCounter);
                 jumpRefreshed = true;
             }
             //check if player gives climbing input and set isClimbing bool accordingly
@@ -334,7 +332,10 @@ public class PlayerController : MonoBehaviour
         player.linearVelocity = new Vector2(move, player.linearVelocity.y);
     }
 
-
+    public void UpdateMoveSpeed(float speed)
+    {
+        moveSpeed = speed;
+    }
 
 
     /// <summary>
@@ -609,14 +610,9 @@ public class PlayerController : MonoBehaviour
 
         if (Time.time - flickerTimeStamp >= 1f / flickerOnDamageSpeed)
         {
-            Debug.Log(defaultColor.a);
-
-
             flickerTimeStamp = Time.time;
 
             defaultColor.a = defaultColor.a == 0f ? 1f : 0f;
-
-            Debug.Log(defaultColor.a);
 
             playerSprite.color = defaultColor;
         }
@@ -734,22 +730,18 @@ public class PlayerController : MonoBehaviour
             {
                 case InputDeviceChange.Added:
                     // Gamepad connected
-                    Debug.Log("Gamepad connected: " + device.name);
                     manette = Gamepad.current;
                     break;
                 case InputDeviceChange.Removed:
                     // Gamepad disconnected
-                    Debug.Log("Gamepad disconnected: " + device.name);
                     manette = null;
                     break;
                 case InputDeviceChange.Reconnected:
                     // Gamepad reconnected
-                    Debug.Log("Gamepad reconnected: " + device.name);
                     manette = Gamepad.current;
                     break;
                 case InputDeviceChange.Disconnected:
                     // Gamepad temporarily disconnected
-                    Debug.Log("Gamepad temporarily disconnected: " + device.name);
                     manette = null;
                     break;
             }
