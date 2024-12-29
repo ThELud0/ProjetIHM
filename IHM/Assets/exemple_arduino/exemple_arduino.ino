@@ -3,7 +3,8 @@ static bool button_flag = false;
 
 int sensorValue = 0;  // value read from the pot
 int outputValue = 0;
-const int analogInPin = A0; 
+const int analogInPin = A0;
+const int jumpButtonPin = 2;
 
 // Interrupt handler, sets the flag for later processing
 void buttonPress() {
@@ -11,17 +12,16 @@ void buttonPress() {
 }
 
 void setup() {
-  int buttonPin = 2;
   
   pinMode(13, OUTPUT);
   digitalWrite(13,HIGH);
   // Internal pullup, no external resistor necessary
-  pinMode(buttonPin,INPUT_PULLUP);
+  pinMode(jumpButtonPin,INPUT_PULLUP);
   // 115200 is a common baudrate : fast without being overwhelming
   Serial.begin(115200);
 
   // As the button is in pullup, detect a connection to ground
-  attachInterrupt(digitalPinToInterrupt(buttonPin),buttonPress,FALLING);
+  attachInterrupt(digitalPinToInterrupt(jumpButtonPin),buttonPress,FALLING);
 
   // Wait for a serial connection
   while (!Serial.availableForWrite());
@@ -35,6 +35,10 @@ void loop() {
   // Slows reaction down a bit
   // but prevents _most_ button press misdetections
   //delay(300);
+  if (!button_flag) {
+    sendMessage('J', 1, nullptr);  // Send "wet" message
+    button_flag = false;
+  }
   analogControl();
 }
 

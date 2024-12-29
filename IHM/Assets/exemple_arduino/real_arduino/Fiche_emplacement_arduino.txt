@@ -1,0 +1,28 @@
+Potentiomètre: envoi message 'S'
+ -> S : A5
+ -> + : Gnd
+ -> - : 5V
+
+Boutton (gros boutton): envoi message 'J'
+ -> vert : 2
+ -> rouge : Gnd
+
+Joystick: envoi message 'X', 'Y' et dans le futur un message pour le dash
+ -> Gnd : Gnd
+ -> 5V : 5V
+ -> VRx : A0
+ -> VRy : A1
+ -> SW : 7
+
+Capteur pression/force: envoi message 'P'
+ -> 1 : A3 + restsistance connectée à GND
+ -> 2 : A5
+
+Moteur: reçoit message 'E' et 'X' pour entrée et sortie de la zone de vent
+ -> Noir : Gnd
+ -> Rouge : Connecter à la droite du transistor (son 5V)
+
+Transistor: gère le moteur
+ -> Gauche : 5V
+ -> Milieu : 13
+ -> Droite : Connecter au moteur

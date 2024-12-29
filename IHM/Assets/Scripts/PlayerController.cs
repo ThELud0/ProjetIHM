@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
     private float tempStopGroundCheckTimer = 0.05f;
     private float tempStopClimbCheckTimer = 0.1f;
     private float jumpTimestamp = 0f;
-    private int jumpCounter;
+    public int jumpCounter;
     private float noGravityScale = 0f;
 
     private float leftLastTapTime = 0f;
@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour
     private bool jumpRefreshed;
     private bool wallJumpRefreshed;
     private bool isTouchingWall;
-    private bool canStillJump;
+    public bool canStillJump;
     private bool trailLocked;
     private float canStillJumpTimestamp = 0f;
 
@@ -299,7 +299,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// Make player jump up
     /// </summary>
-    private void PlayerJumpUp()
+    public void PlayerJumpUp()
     {
         PlayerJumpAnimation();
         SoundFXManager.instance.PlaySoundFXClip(jumpSoundClip, transform, 1f);
@@ -580,7 +580,7 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    private void RestoreSize()
+    public void RestoreSize()
     {
         transform.localScale = currentScale;
         wallCheckRadius -= 0.25f;
@@ -588,7 +588,7 @@ public class PlayerController : MonoBehaviour
         climbCheckRadius -= 0.22f;
     }
 
-    private void ChangeColor(Color color)
+    public void ChangeColor(Color color)
     {
         playerSprite.color = color;
     }
