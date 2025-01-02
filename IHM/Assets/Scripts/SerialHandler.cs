@@ -64,9 +64,38 @@ public class SerialHandler : MonoBehaviour
                 }
                 break;
 
+            case 'X':  // Horizontal movement data
+                if (payload != null && payload.Length == 1)
+                {
+                    int hmove = payload[0];
+                    hmove = hmove - 126;
+                    if (hmove > 120)
+                        hmove = 130;
+                    else if (hmove < -120)
+                        hmove = -130;
+                    playerController.moveX = hmove * playerController.moveSpeed * 1.5f / 130f;
+                    
+                }
+                break;
+
+            case 'Y':  // Vertical movement data
+                if (payload != null && payload.Length == 1)
+                {
+                    int vmove = payload[0];
+                    vmove = -(vmove - 124);
+                    if (vmove > 120)
+                        vmove = 130;
+                    else if (vmove < -120)
+                        vmove = -130;
+                    playerController.moveY = vmove * playerController.moveSpeed * 1.5f / 130f;
+                }
+                break;
+
             default:
                 Debug.LogWarning($"Unknown message type: {type}");
                 break;
+
+                
         }
     }
 

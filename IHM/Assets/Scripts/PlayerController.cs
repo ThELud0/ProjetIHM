@@ -34,7 +34,11 @@ public class PlayerController : MonoBehaviour
 
     public int maxHealth;
     public float invincibilityDuration;
-    
+
+    public float moveX;
+    public float moveY;
+
+
 
     private Gamepad manette;
 
@@ -183,15 +187,17 @@ public class PlayerController : MonoBehaviour
             CheckClimbInputAndSet();
             if (isClimbing  && (Time.time > jumpTimestamp + tempStopClimbCheckTimer))
             {
+
                 // get player keyboard input for y-axis movement
-                float verticalMove = Input.GetAxis("Vertical") * climbSpeed;
-                if ((verticalMove == 0) && (manette != null)) //if no keyboard input check for gamepad input
+                if (moveY==0)
+                    moveY = Input.GetAxis("Vertical") * climbSpeed;
+                if ((moveY == 0) && (manette != null)) //if no keyboard input check for gamepad input
                 {
                     direction = manette.dpad.ReadValue();
-                    verticalMove = direction.y * climbSpeed;
+                    moveY = direction.y * climbSpeed;
                 }
                 // apply move speed to player velocity
-                player.linearVelocity = new Vector2(player.linearVelocity.x, verticalMove);
+                player.linearVelocity = new Vector2(player.linearVelocity.x, moveY);
             }
             
         }
@@ -205,8 +211,10 @@ public class PlayerController : MonoBehaviour
 
         CheckAndExecuteJump();
 
-        float moveX = Input.GetAxis("Horizontal");
-        float moveY = Input.GetAxis("Vertical");
+        if (moveX == 0)
+            moveX = Input.GetAxis("Horizontal");
+        if (moveY == 0)
+            moveY = Input.GetAxis("Vertical");
         if (((moveX == 0)&&(moveY == 0)) && (manette != null)) //if no keyboard input check for gamepad input
         {
             direction = manette.dpad.ReadValue();
@@ -320,16 +328,17 @@ public class PlayerController : MonoBehaviour
     private void HorizontalMovement()
     {
         // get player keyboard input for x-axis movement
-        float move = Input.GetAxis("Horizontal") * moveSpeed;
-        if ((move == 0) && (manette != null)) //if no keyboard input check for gamepad input
+        if (moveX==0)
+            moveX = Input.GetAxis("Horizontal") * moveSpeed;
+        if ((moveX == 0) && (manette != null)) //if no keyboard input check for gamepad input
         {
             direction = manette.dpad.ReadValue();
-            move = direction.x * moveSpeed;
+            moveX = direction.x * moveSpeed;
         }
         // check for sprinting input and modify move speed accordingly
-        move = CheckAndApplyPlayerHorizontalSprint(move);
+        moveX = CheckAndApplyPlayerHorizontalSprint(moveX);
         // apply move speed to player velocity
-        player.linearVelocity = new Vector2(move, player.linearVelocity.y);
+        player.linearVelocity = new Vector2(moveX, player.linearVelocity.y);
     }
 
     public void UpdateMoveSpeed(float speed)
