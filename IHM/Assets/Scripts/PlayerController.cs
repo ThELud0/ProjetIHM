@@ -87,6 +87,10 @@ public class PlayerController : MonoBehaviour
     public float flickerOnDamageSpeed;
 
     public bool serialDashRequested = false;
+    private bool nearClimbableWallMessageSent = false;
+    private bool awayFromClimbableWallMessageSent = false;
+
+
     private float CurrentDashTimer;
     public float DashTime = 0.3f;
     private bool IsDashing = false;
@@ -96,6 +100,8 @@ public class PlayerController : MonoBehaviour
     private bool hasDashed = false;
     TrailRenderer trail;
     public Transform departCamera;
+
+    [SerializeField] private SerialHandler serialHandler;
 
     /* -------------------------------------------------- BEGINNING OF START METHOD -------------------------------------------------- */
     void Start()
@@ -178,6 +184,13 @@ public class PlayerController : MonoBehaviour
         // check if player is near climbable surface
         if (CheckAndReturnIfPlayerCanClimb())
         {
+            if (!nearClimbableWallMessageSent)
+            {
+                nearClimbableWallMessageSent = true;
+                awayFromClimbableWallMessageSent = false;
+                serialHandler.SendMessage('C', null);
+            }
+
             if (!jumpRefreshed)
             {
                 jumpCounter = maxJumpAmount;
@@ -205,6 +218,12 @@ public class PlayerController : MonoBehaviour
         {
             jumpRefreshed = false;
             NotClimbingOrStopped(); //player cannot be climbing if not near climbable surface
+            if (!awayFromClimbableWallMessageSent)
+            {
+                nearClimbableWallMessageSent = false;
+                awayFromClimbableWallMessageSent = true;
+                serialHandler.SendMessage('F', null);
+            }
         }
         ClimbAnimation();
 

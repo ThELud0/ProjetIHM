@@ -24,6 +24,7 @@ public class DestructiblePlatform : MonoBehaviour
     private float xShakingOffset;
     private float yShakingOffset;
     private bool crumbling = false;
+    [SerializeField] private SerialHandler serialHandler;
 
     private void Start()
     {
@@ -47,6 +48,7 @@ public class DestructiblePlatform : MonoBehaviour
         {
             SoundFXManager.instance.PlaySoundFXClipSpecificLength(crumblingSoundClip, transform, 1f, destructionTime);
             Invoke("DestroyPlatform", destructionTime);
+            serialHandler.SendMessage('B', null);
         }
         crumbling = true;
         
@@ -71,7 +73,7 @@ public class DestructiblePlatform : MonoBehaviour
             onPlatform = false;
         }
         SoundFXManager.instance.PlaySoundFXClip(breakingSoundClip, transform, 1f);
-
+        serialHandler.SendMessage('Z', null);
         gameObject.SetActive(false);
         crumbling = false;
         Invoke("RepairPlatform", repairTime);

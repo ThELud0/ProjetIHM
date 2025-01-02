@@ -23,7 +23,7 @@ int outputValueX = 0;
 int outputValueY = 0;
 
 int outputValueSpeed = 0;
-int podometerSensorValue = 0; 
+int podometerSensorValue = 0;
 
 bool activateSendMessages = true;
 bool activateReceiveMessages = true;
@@ -31,17 +31,23 @@ bool activateReceiveMessages = true;
 // Types de message
 #define ENTER_WIND_ZONE 'E'
 #define EXIT_WIND_ZONE 'X'
+#define NEAR_CLIMBABLE_WALL 'C'
+#define FAR_FROM_CLIMBABLE_WALL 'F'
+#define BREAKING_PLATFORM 'B'
+#define BROKE_PLATFORM 'Z'
 
 void setup() {
-  pinMode(axeX, INPUT);           // définition de A0 comme une entrée
-  pinMode(axeY, INPUT);           // définition de A1 comme une entrée
-  pinMode(dashBtPin, INPUT);      // définition de 7 comme une entrée
-  digitalWrite(dashBtPin, HIGH);  // Activation de la résistance de Pull-Up interne de la carte Uno
-  pinMode(jumpBtPin, INPUT_PULLUP);// définition de 2 comme une entrée
+  pinMode(axeX, INPUT);              // définition de A0 comme une entrée
+  pinMode(axeY, INPUT);              // définition de A1 comme une entrée
+  pinMode(dashBtPin, INPUT);         // définition de 7 comme une entrée
+  digitalWrite(dashBtPin, HIGH);     // Activation de la résistance de Pull-Up interne de la carte Uno
+  pinMode(jumpBtPin, INPUT_PULLUP);  // définition de 2 comme une entrée
   digitalWrite(jumpBtPin, HIGH);
-  pinMode(potentiometerPin, INPUT); // définition de A5 comme une entrée
-  pinMode(captForcePin, INPUT); // définition de A3 comme une entrée
-  pinMode (motorPin,OUTPUT); //definition de 13 comme sortie
+  pinMode(potentiometerPin, INPUT);  // définition de A5 comme une entrée
+  pinMode(captForcePin, INPUT);      // définition de A3 comme une entrée
+  pinMode(motorPin, OUTPUT);         //definition de 13 comme sortie
+  pinMode(ledWall, OUTPUT);
+  pinMode(ledBreak, OUTPUT);
 
   Serial.begin(115200);
   justJumped = millis();
@@ -72,17 +78,17 @@ void loop() {
     dashReleased = false;
     sendMessage(dashMessageType, 0, nullptr);
   }
-  
+
 
   jumpButtonRead = digitalRead(jumpBtPin);
   if (jumpButtonRead == 1)
     jumpReleased = true;
-  if((jumpButtonRead == 0) && (millis() > justJumped + jumpPressDelay) && jumpReleased){
+  if ((jumpButtonRead == 0) && (millis() > justJumped + jumpPressDelay) && jumpReleased) {
     justJumped = millis();
     jumpReleased = false;
     sendMessage(jumpMessageType, 0, nullptr);
   }
-    
+
 
 
   int pression = analogRead(captForcePin);
@@ -97,7 +103,7 @@ void loop() {
     uint8_t payload[payloadLength];
     if (payloadLength > 0)
       Serial.readBytes(payload, payloadLength);
-    
+
     processMessage(messageType, payload);
   }
   delay(50);
@@ -113,20 +119,20 @@ void sendMovementMessage() {
   outputValueY = map(Y, 0, 1023, 0, 255);
   payloadX = outputValueX;
   payloadY = outputValueY;
-  
+
 
   sendMessage(movementMessageXType, 1, &payloadX);
   sendMessage(movementMessageYType, 1, &payloadY);
 }
 
-void analogControl(){
+void analogControl() {
   // read the analog in value:
   podometerSensorValue = analogRead(potentiometerPin);
   //Serial.println(podometerSensorValue);
   // map it to the range of the analog out:
   outputValueSpeed = map(podometerSensorValue, 0, 1023, 0, 255);
 
-  uint8_t payload = outputValueSpeed;  // Payload is a single byte
+  uint8_t payload = outputValueSpeed;                // Payload is a single byte
   sendMessage(changeSpeedMessageType, 1, &payload);  // Type = 'S', Length = 1
   delay(20);
 }
@@ -146,16 +152,32 @@ void sendMessage(char type, uint8_t length, uint8_t* data) {
 void processMessage(char messageType, uint8_t payload) {
   if (activateReceiveMessages) {
     switch (messageType) {
-          case ENTER_WIND_ZONE:
-            digitalWrite(motorPin, HIGH);
-            break;
+      case ENTER_WIND_ZONE:
+        digitalWrite(motorPin, HIGH);
+        break;
 
-          case EXIT_WIND_ZONE:
-            digitalWrite(motorPin, LOW);
-            break;
+      case EXIT_WIND_ZONE:
+        digitalWrite(motorPin, LOW);
+        break;
 
-          default:
-            break;
-     }
+      case NEAR_CLIMBABLE_WALL:
+        digitalWrite(ledWall, HIGH);
+        break;
+
+      case FAR_FROM_CLIMBABLE_WALL:
+        digitalWrite(ledWall, LOW);
+        break;
+
+      case BREAKING_PLATFORM:
+        digitalWrite(ledBreak, HIGH);
+        break;
+
+      case BROKE_PLATFORM:
+        digitalWrite(ledBreak, LOW);
+        break;
+
+      default:
+        break;
+    }
   }
 }
