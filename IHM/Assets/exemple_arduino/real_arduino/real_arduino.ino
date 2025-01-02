@@ -19,11 +19,10 @@ char dashMessageType = 'D';
 bool jumpReleased, dashReleased;
 unsigned long justJumped, justUpdatedPrint, justDashed;
 const unsigned long jumpPressDelay = 200, printDelay = 500;
-int outputValueX = 0;
-int outputValueY = 0;
 
 int outputValueSpeed = 0;
 int podometerSensorValue = 0;
+int X = 0, Y = 0;
 
 bool activateSendMessages = true;
 bool activateReceiveMessages = true;
@@ -61,13 +60,17 @@ void loop() {
 
   int jumpButtonRead;
   int dashButtonRead;
+
   analogControl();
+
   if (millis() > justUpdatedPrint + printDelay) {
 
     justUpdatedPrint = millis();
     //Serial.println("Mouvement mis à jour");
-    //sendMovementMessage(); -> to sed movement but makes the game lag as fuck
+    handleMouvementMessage();
   }
+
+
 
   //gérer le dash avec bouton pressoir
   dashButtonRead = digitalRead(dashBtPin);
@@ -77,6 +80,7 @@ void loop() {
     justDashed = millis();
     dashReleased = false;
     sendMessage(dashMessageType, 0, nullptr);
+    delay(20);
   }
 
 
@@ -87,6 +91,7 @@ void loop() {
     justJumped = millis();
     jumpReleased = false;
     sendMessage(jumpMessageType, 0, nullptr);
+    delay(20);
   }
 
 
@@ -96,6 +101,7 @@ void loop() {
   //Serial.println(pression);
   uint8_t pressionMapped = map(pression, 0, 1023, 0, 255);
   sendMessage(applyPressionMessageType, 1, &pressionMapped);
+  delay(20);
 
   if (Serial.available() > 1) {
     char messageType = Serial.read();
@@ -109,20 +115,15 @@ void loop() {
   delay(50);
 }
 
-void sendMovementMessage() {
-  int X, Y;
-  uint8_t payloadX, payloadY;
+void handleMouvementMessage() {
   X = analogRead(axeX);
   Y = analogRead(axeY);
-
-  outputValueX = map(X, 0, 1023, 0, 255);
-  outputValueY = map(Y, 0, 1023, 0, 255);
-  payloadX = outputValueX;
-  payloadY = outputValueY;
-
-
+  uint8_t payloadX = map(X, 0, 1023, 0, 255);
+  uint8_t payloadY = map(Y, 0, 1023, 0, 255);
   sendMessage(movementMessageXType, 1, &payloadX);
+  delay(50);
   sendMessage(movementMessageYType, 1, &payloadY);
+  delay(50);
 }
 
 void analogControl() {
