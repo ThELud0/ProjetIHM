@@ -5,6 +5,8 @@ const int potentiometerPin = A5;
 const int jumpBtPin = 2;
 const int captForcePin = A3;
 const int motorPin = 13;
+const int ledWall = 3;
+const int ledBreak = 4;
 
 
 char jumpMessageType = 'J';
@@ -12,9 +14,10 @@ char movementMessageXType = 'X';
 char movementMessageYType = 'Y';
 char changeSpeedMessageType = 'S';
 char applyPressionMessageType = 'P';
+char dashMessageType = 'D';
 
-bool jumpReleased;
-unsigned long justJumped, justUpdatedPrint;
+bool jumpReleased, dashReleased;
+unsigned long justJumped, justUpdatedPrint, justDashed;
 const unsigned long jumpPressDelay = 200, printDelay = 500;
 int outputValueX = 0;
 int outputValueY = 0;
@@ -44,12 +47,14 @@ void setup() {
   justJumped = millis();
   justUpdatedPrint = millis();
   jumpReleased = true;
+  dashReleased = true;
 }
 
 
 void loop() {
 
   int jumpButtonRead;
+  int dashButtonRead;
   analogControl();
   if (millis() > justUpdatedPrint + printDelay) {
 
@@ -57,27 +62,32 @@ void loop() {
     //Serial.println("Mouvement mis à jour");
     //sendMovementMessage(); -> to sed movement but makes the game lag as fuck
   }
-  //gérer le dash avec bouton pressoir: je laisse l'ancien code du jump avec bouton poussoir 
-  /*
-  buttonRead = digitalRead(jumpBtPin);
-  if (buttonRead == 1)
-    jumpReleased = true;
-  if ((buttonRead != 1) && (millis() > justJumped + jumpPressDelay) && jumpReleased) {
-    justJumped = millis();
-    jumpReleased = false;
-    Serial.println("Bouton-poussoir actif");
-    sendJumpMessage();
+
+  //gérer le dash avec bouton pressoir
+  dashButtonRead = digitalRead(dashBtPin);
+  if (dashButtonRead == 1)
+    dashReleased = true;
+  if ((dashButtonRead != 1) && (millis() > justDashed + jumpPressDelay) && dashReleased) {
+    justDashed = millis();
+    dashReleased = false;
+    sendMessage(dashMessageType, 0, nullptr);
   }
-  */
+  
 
   jumpButtonRead = digitalRead(jumpBtPin);
-  if(jumpButtonRead == 0)
+  if (jumpButtonRead == 1)
+    jumpReleased = true;
+  if((jumpButtonRead == 0) && (millis() > justJumped + jumpPressDelay) && jumpReleased){
+    justJumped = millis();
+    jumpReleased = false;
     sendMessage(jumpMessageType, 0, nullptr);
+  }
+    
+
 
   int pression = analogRead(captForcePin);
   //Serial.print("valeur recue - ");
   //Serial.println(pression);
-
   uint8_t pressionMapped = map(pression, 0, 1023, 0, 255);
   sendMessage(applyPressionMessageType, 1, &pressionMapped);
 
@@ -99,44 +109,11 @@ void sendMovementMessage() {
   X = analogRead(axeX);
   Y = analogRead(axeY);
 
-/*
-  Serial.print("Axe X:");
-  Serial.print(X);
-  Serial.print(", ");
-  Serial.print("Axe Y:");
-  Serial.print(Y);
-  Serial.println("");
-  */
-
-
   outputValueX = map(X, 0, 1023, 0, 255);
   outputValueY = map(Y, 0, 1023, 0, 255);
   payloadX = outputValueX;
   payloadY = outputValueY;
   
-  /*
-  outputValueX = map(X, 0, 1023, 0, 255) - 126;
-  outputValueY = map(Y, 0, 1023, 0, 255) - 124;
-
-  payloadX = outputValueX;
-  if (outputValueX > 120)
-    payloadX = 130;
-  else if (outputValueX < -120)
-    payloadX = -130;
-
-  payloadY = -outputValueY;
-  if (outputValueY > 120)
-    payloadY = 130;
-  else if (outputValueY < -120)
-    payloadY = -130;
-
-  Serial.print("Payload X:");
-  Serial.print(payloadX);
-  Serial.print(", ");
-  Serial.print("Payload Y:");
-  Serial.print(payloadY);
-  Serial.println("");
-*/
 
   sendMessage(movementMessageXType, 1, &payloadX);
   sendMessage(movementMessageYType, 1, &payloadY);

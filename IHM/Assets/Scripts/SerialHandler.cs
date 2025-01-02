@@ -61,8 +61,14 @@ public class SerialHandler : MonoBehaviour
             case 'J': // Jump
                 if ((playerController.jumpCounter == playerController.maxJumpAmount) && playerController.canStillJump)
                     playerController.PlayerJumpUp();
+                else if ((playerController.jumpCounter > 0) && (playerController.jumpCounter < playerController.maxJumpAmount))
+                    playerController.PlayerJumpUp();
                 UnityEngine.Debug.Log("Jump message received");
                 break;
+
+            case 'D': // Dash
+                playerController.serialDashRequested = true;
+
             case 'S':  // Speed data 
                 if (payload != null && payload.Length == 1)
                 {

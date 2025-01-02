@@ -86,7 +86,7 @@ public class PlayerController : MonoBehaviour
     public float flickerOnDamageTime;
     public float flickerOnDamageSpeed;
 
-
+    public bool serialDashRequested = false;
     private float CurrentDashTimer;
     public float DashTime = 0.3f;
     private bool IsDashing = false;
@@ -222,7 +222,7 @@ public class PlayerController : MonoBehaviour
             moveY = direction.y;
         }
 
-        if ( ((manette != null && manette.buttonEast.wasPressedThisFrame) || Input.GetKeyDown(KeyCode.LeftShift) ) && !IsDashing && (moveX != 0 || moveY != 0) && !hasDashed)
+        if ( ((manette != null && manette.buttonEast.wasPressedThisFrame) || Input.GetKeyDown(KeyCode.LeftShift) || serialDashRequested) && !IsDashing && (moveX != 0 || moveY != 0) && !hasDashed)
         {
             SoundFXManager.instance.PlaySoundFXClip(dashSoundClip, transform, 1f);
             IsDashing = true;
@@ -257,6 +257,7 @@ public class PlayerController : MonoBehaviour
         if (CurrentDashTimer <= 0)
         {
             IsDashing = false;
+            serialDashRequested = false;
             player.linearVelocity = Vector2.zero;
 
             if (!sprinting)
