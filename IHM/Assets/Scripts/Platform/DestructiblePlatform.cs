@@ -49,6 +49,7 @@ public class DestructiblePlatform : MonoBehaviour
             SoundFXManager.instance.PlaySoundFXClipSpecificLength(crumblingSoundClip, transform, 1f, destructionTime);
             Invoke("DestroyPlatform", destructionTime);
             serialHandler.SendMessage('B', null);
+            UnityEngine.Debug.Log("Platform destruction started sent");
         }
         crumbling = true;
         
@@ -73,6 +74,7 @@ public class DestructiblePlatform : MonoBehaviour
             onPlatform = false;
         }
         SoundFXManager.instance.PlaySoundFXClip(breakingSoundClip, transform, 1f);
+        UnityEngine.Debug.Log("Platform destroyed sent");
         serialHandler.SendMessage('Z', null);
         gameObject.SetActive(false);
         crumbling = false;

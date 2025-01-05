@@ -20816,10 +20816,6 @@ PrefabInstance:
       value: CrumblePlatform
       objectReference: {fileID: 0}
     - target: {fileID: 3526757444316005921, guid: c518923126d65474da302b4840bb1ce3, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 5.143782
-      objectReference: {fileID: 0}
-    - target: {fileID: 3526757444316005921, guid: c518923126d65474da302b4840bb1ce3, type: 3}
       propertyPath: m_LocalPosition.x
       value: -11.6
       objectReference: {fileID: 0}
@@ -20859,6 +20855,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6976840189248446385, guid: c518923126d65474da302b4840bb1ce3, type: 3}
+      propertyPath: serialHandler
+      value: 
+      objectReference: {fileID: 66396808}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -37830,6 +37830,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6976840189248446385, guid: c518923126d65474da302b4840bb1ce3, type: 3}
+      propertyPath: serialHandler
+      value: 
+      objectReference: {fileID: 66396808}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -87228,6 +87232,10 @@ PrefabInstance:
       propertyPath: departCamera
       value: 
       objectReference: {fileID: 56365262}
+    - target: {fileID: 8168791171528750798, guid: 51391c43bdc885448b8ba4b689a4b62e, type: 3}
+      propertyPath: serialHandler
+      value: 
+      objectReference: {fileID: 66396808}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -118753,10 +118761,6 @@ PrefabInstance:
       value: CrumblePlatform (1)
       objectReference: {fileID: 0}
     - target: {fileID: 3526757444316005921, guid: c518923126d65474da302b4840bb1ce3, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 5.07154
-      objectReference: {fileID: 0}
-    - target: {fileID: 3526757444316005921, guid: c518923126d65474da302b4840bb1ce3, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.4
       objectReference: {fileID: 0}
@@ -118796,6 +118800,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6976840189248446385, guid: c518923126d65474da302b4840bb1ce3, type: 3}
+      propertyPath: serialHandler
+      value: 
+      objectReference: {fileID: 66396808}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -189,6 +189,7 @@ public class PlayerController : MonoBehaviour
                 nearClimbableWallMessageSent = true;
                 awayFromClimbableWallMessageSent = false;
                 serialHandler.SendMessage('C', null);
+                UnityEngine.Debug.Log("Close wall sent");
             }
 
             if (!jumpRefreshed)
@@ -223,6 +224,7 @@ public class PlayerController : MonoBehaviour
                 nearClimbableWallMessageSent = false;
                 awayFromClimbableWallMessageSent = true;
                 serialHandler.SendMessage('F', null);
+                UnityEngine.Debug.Log("Away from wall sent");
             }
         }
         ClimbAnimation();

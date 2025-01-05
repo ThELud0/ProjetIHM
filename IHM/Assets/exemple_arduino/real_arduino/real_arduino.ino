@@ -7,6 +7,7 @@ const int captForcePin = A3;
 const int motorPin = 13;
 const int ledWall = 3;
 const int ledBreak = 4;
+const bool DEBUG = false;
 
 
 char jumpMessageType = 'J';
@@ -18,10 +19,11 @@ char dashMessageType = 'D';
 
 bool jumpReleased, dashReleased;
 unsigned long justJumped, justUpdatedPrint, justDashed;
-const unsigned long jumpPressDelay = 200, printDelay = 500;
+const unsigned long jumpPressDelay = 200, printDelay = 100;
 
 int outputValueSpeed = 0;
 int podometerSensorValue = 0;
+int prevPodometerValue = 0;
 int X = 0, Y = 0;
 
 bool activateSendMessages = true;
@@ -53,6 +55,8 @@ void setup() {
   justUpdatedPrint = millis();
   jumpReleased = true;
   dashReleased = true;
+  digitalWrite(ledBreak, HIGH);
+  digitalWrite(ledWall, HIGH);
 }
 
 
@@ -66,7 +70,8 @@ void loop() {
   if (millis() > justUpdatedPrint + printDelay) {
 
     justUpdatedPrint = millis();
-    //Serial.println("Mouvement mis à jour");
+    if (DEBUG)
+      Serial.println("Mouvement mis à jour");
     handleMouvementMessage();
   }
 
@@ -79,6 +84,8 @@ void loop() {
   if ((dashButtonRead != 1) && (millis() > justDashed + jumpPressDelay) && dashReleased) {
     justDashed = millis();
     dashReleased = false;
+    if (DEBUG)
+      Serial.println("dash pressed");
     sendMessage(dashMessageType, 0, nullptr);
     delay(20);
   }
@@ -90,6 +97,8 @@ void loop() {
   if ((jumpButtonRead == 0) && (millis() > justJumped + jumpPressDelay) && jumpReleased) {
     justJumped = millis();
     jumpReleased = false;
+    if (DEBUG)
+      Serial.println("jump pressed");
     sendMessage(jumpMessageType, 0, nullptr);
     delay(20);
   }
@@ -118,6 +127,11 @@ void loop() {
 void handleMouvementMessage() {
   X = analogRead(axeX);
   Y = analogRead(axeY);
+  if (DEBUG) {
+    Serial.println(X);
+    Serial.println(Y);
+  }
+
   uint8_t payloadX = map(X, 0, 1023, 0, 255);
   uint8_t payloadY = map(Y, 0, 1023, 0, 255);
   sendMessage(movementMessageXType, 1, &payloadX);
@@ -129,12 +143,18 @@ void handleMouvementMessage() {
 void analogControl() {
   // read the analog in value:
   podometerSensorValue = analogRead(potentiometerPin);
-  //Serial.println(podometerSensorValue);
+
   // map it to the range of the analog out:
   outputValueSpeed = map(podometerSensorValue, 0, 1023, 0, 255);
 
-  uint8_t payload = outputValueSpeed;                // Payload is a single byte
-  sendMessage(changeSpeedMessageType, 1, &payload);  // Type = 'S', Length = 1
+  uint8_t payload = outputValueSpeed;  // Payload is a single byte
+  if ((podometerSensorValue >= prevPodometerValue + 3) || (podometerSensorValue <= prevPodometerValue - 3)) {
+    if (DEBUG)
+      Serial.println(podometerSensorValue);
+    sendMessage(changeSpeedMessageType, 1, &payload);  // Type = 'S', Length = 1
+    delay(20);
+  }
+  prevPodometerValue = podometerSensorValue;
   delay(20);
 }
 
@@ -162,19 +182,19 @@ void processMessage(char messageType, uint8_t payload) {
         break;
 
       case NEAR_CLIMBABLE_WALL:
-        digitalWrite(ledWall, HIGH);
-        break;
-
-      case FAR_FROM_CLIMBABLE_WALL:
         digitalWrite(ledWall, LOW);
         break;
 
+      case FAR_FROM_CLIMBABLE_WALL:
+        digitalWrite(ledWall, HIGH);
+        break;
+
       case BREAKING_PLATFORM:
-        digitalWrite(ledBreak, HIGH);
+        digitalWrite(ledBreak, LOW);
         break;
 
       case BROKE_PLATFORM:
-        digitalWrite(ledBreak, LOW);
+        digitalWrite(ledBreak, HIGH);
         break;
 
       default:

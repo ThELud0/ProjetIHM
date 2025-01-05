@@ -68,12 +68,15 @@ public class SerialHandler : MonoBehaviour
 
             case 'D': // Dash
                 playerController.serialDashRequested = true;
+                UnityEngine.Debug.Log("Dash message received");
+                break;
 
             case 'S':  // Speed data 
                 if (payload != null && payload.Length == 1)
                 {
                     int speed = payload[0];
                     playerController.UpdateMoveSpeed(speed / 1.275f);  // Normalize speed (#TODO_N I made it faster, let's have a middle ground)
+                    UnityEngine.Debug.Log("Speed data message received");
                 }
                 break;
             case 'P': // Apply pressure to stomp #TODO_N peut être le faire s'écraser sur le côté. Aussi fixer problème de sursaut
@@ -121,7 +124,7 @@ public class SerialHandler : MonoBehaviour
                     else if (hmove < -120)
                         hmove = -130;
                     playerController.moveX = hmove * playerController.moveSpeed * 1.5f / 130f;
-
+                    UnityEngine.Debug.Log($"mouvement horizontal détecté : {hmove}");
                 }
                 break;
 
@@ -135,6 +138,7 @@ public class SerialHandler : MonoBehaviour
                     else if (vmove < -120)
                         vmove = -130;
                     playerController.moveY = vmove * playerController.moveSpeed * 1.5f / 130f;
+                    UnityEngine.Debug.Log($"mouvement vertical détecté : {vmove}");
                 }
                 break;
 
